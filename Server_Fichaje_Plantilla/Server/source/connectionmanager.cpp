@@ -1,7 +1,9 @@
 #include <QWebSocketServer>
 #include <QTimer>
+#include <QWebSocket>
 
 #include "connectionmanager.h"
+#include "connection.h"
 
 ConnectionManager *ConnectionManager::m_instance = NULL;
 
@@ -13,7 +15,7 @@ ConnectionManager* ConnectionManager::getInstance(quint16 port) {
     return m_instance;
 }
 
-ConnectionManager::ConnectionManager(quint16 port) : m_port(port) {
+ConnectionManager::ConnectionManager(quint16 port) : m_port{port} {
     QTimer::singleShot(0, this, SLOT(startServer()));
 }
 
@@ -30,5 +32,26 @@ void ConnectionManager::startServer() {
         qDebug() << "Servidor iniciado. Puerto: " << m_port;
     } else {
         qDebug() << "Error al iniciar el servidor. Puerto: " << m_port;
+    }
+}
+
+void ConnectionManager::webSocketConnected() {
+    Connection *connection = new Connection(m_webSocketServer->nextPendingConnection());
+
+    qDebug() << "Conexion iniciada. IP: " <<
+                connection->getWebSocket()->peerAddress().toString();
+
+    m_connections << connection;
+}
+
+void ConnectionManager::webSocketDisconnected() {
+    Connection *connection = qobject_cast<Connection *>(sender());
+
+    if (connection) {
+        qDebug() << "Conexión finalizada. IP: " <<
+                    connection->getWebSocket()->peerAddress().toString();
+
+        m_connections.removeAll(connection);
+        connection->deleteLater();
     }
 }

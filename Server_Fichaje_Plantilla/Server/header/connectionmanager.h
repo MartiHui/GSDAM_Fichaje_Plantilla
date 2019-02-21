@@ -29,6 +29,8 @@ signals:
 
 private slots:
     void startServer();
+    void webSocketConnected();
+    void webSocketDisconnected();
 };
 
 #endif // CONNECTIONMANAGER_H

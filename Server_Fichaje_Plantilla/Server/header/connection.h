@@ -16,6 +16,6 @@ public:
 
 private:
     QWebSocket *m_webSocket;
-}
+};
 
 #endif // CONNECTION_H
