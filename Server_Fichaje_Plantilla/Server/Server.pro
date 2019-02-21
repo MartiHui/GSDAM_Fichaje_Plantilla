@@ -21,7 +21,9 @@ INCLUDEPATH += ./source \
 
 SOURCES += \
         source/main.cpp \
-    source/connectionmanager.cpp
+    source/connectionmanager.cpp \
+    source/connection.cpp
 
 HEADERS += \
-    header/connectionmanager.h
+    header/connectionmanager.h \
+    header/connection.h
