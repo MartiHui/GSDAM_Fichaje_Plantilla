@@ -4,6 +4,7 @@
 
 #include "connectionmanager.h"
 #include "connection.h"
+#include "databaseinterface.h"
 
 ConnectionManager *ConnectionManager::m_instance = NULL;
 
@@ -30,6 +31,11 @@ void ConnectionManager::startServer() {
 
     if (m_webSocketServer->listen(QHostAddress::Any, m_port)) {
         qDebug() << "Servidor iniciado. Puerto: " << m_port;
+
+        connect(m_webSocketServer, SIGNAL(newConnection()),
+                this, SLOT(webSocketConnected()));
+        connect(m_webSocketServer, SIGNAL(closed()),
+                this, SLOT(close()));
     } else {
         qDebug() << "Error al iniciar el servidor. Puerto: " << m_port;
     }
@@ -65,4 +71,8 @@ void ConnectionManager::processMessage(const QString &message) {
     Connection *connection = qobject_cast<Connection *>(sender());
 
     // TODO: programar respuestas
+}
+
+void ConnectionManager::close() {
+    DatabaseInterface::getInstance()->close();
 }

@@ -14,6 +14,7 @@ class ConnectionManager : public QObject {
     Q_OBJECT
 
 public:
+    // Devuelve un puntero a la única instancia activa posible de la clase
     static ConnectionManager* getInstance(quint16 port=0);
 
 private:
@@ -25,14 +26,13 @@ private:
     QWebSocketServer *m_webSocketServer;
     QList<Connection *> m_connections; // Lista con todas las conexiones activas
 
-signals:
-
 private slots:
     void startServer();
     void webSocketConnected();
     void webSocketDisconnected();
     // Analiza el mensaje recibido de una conexion y actua de forma acorde
     void processMessage(const QString &message);
+    void close();
 };
 
 #endif // CONNECTIONMANAGER_H
