@@ -31,6 +31,8 @@ private slots:
     void startServer();
     void webSocketConnected();
     void webSocketDisconnected();
+    // Analiza el mensaje recibido de una conexion y actua de forma acorde
+    void processMessage(const QString &message);
 };
 
 #endif // CONNECTIONMANAGER_H

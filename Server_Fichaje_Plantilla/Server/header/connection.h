@@ -16,6 +16,14 @@ public:
 
 private:
     QWebSocket *m_webSocket;
+
+signals:
+    void textMessageReceived(const QString &message);
+    void disconnected();
+
+private slots:
+    void onMessageReceived(const QString &message);
+    void onDisconnect();
 };
 
 #endif // CONNECTION_H

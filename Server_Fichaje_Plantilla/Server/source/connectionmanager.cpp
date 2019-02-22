@@ -41,6 +41,11 @@ void ConnectionManager::webSocketConnected() {
     qDebug() << "Conexion iniciada. IP: " <<
                 connection->getWebSocket()->peerAddress().toString();
 
+    connect(connection, SIGNAL(textMessageReceived(QString)),
+            this, SLOT(processMessage(QString)));
+    connect(connection, SIGNAL(disconnected()),
+            this, SLOT(webSocketDisconnected()));
+
     m_connections << connection;
 }
 
@@ -54,4 +59,10 @@ void ConnectionManager::webSocketDisconnected() {
         m_connections.removeAll(connection);
         connection->deleteLater();
     }
+}
+
+void ConnectionManager::processMessage(const QString &message) {
+    Connection *connection = qobject_cast<Connection *>(sender());
+
+    // TODO: programar respuestas
 }
