@@ -5,7 +5,7 @@
 ServerConnection::ServerConnection(QString serverUrl) {
     m_webSocket = new QWebSocket();
     connect(m_webSocket, SIGNAL(connected()), this, SLOT(onConnected()));
-    m_webSocket->open(QUrl(url));
+    m_webSocket->open(QUrl(serverUrl));
 }
 
 ServerConnection::~ServerConnection() {

@@ -30,11 +30,13 @@ INCLUDEPATH += ./source \
 SOURCES += \
         source/main.cpp \
         source/mainwindow.cpp \
-    source/serverconnection.cpp
+    source/serverconnection.cpp \
+    source/employeeinfo.cpp
 
 HEADERS += \
         header/mainwindow.h \
-    header/serverconnection.h
+    header/serverconnection.h \
+    header/employeeinfo.h
 
 FORMS += \
         ui/mainwindow.ui
