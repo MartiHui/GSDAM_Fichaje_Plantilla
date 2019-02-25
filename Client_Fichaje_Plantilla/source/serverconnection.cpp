@@ -25,3 +25,7 @@ void ServerConnection::onMessageReceived(QString message) {
 void ServerConnection::sendMessage(QString message) {
     m_webSocket->sendTextMessage(message);
 }
+
+void ServerConnection::close() {
+    m_webSocket->close();
+}
