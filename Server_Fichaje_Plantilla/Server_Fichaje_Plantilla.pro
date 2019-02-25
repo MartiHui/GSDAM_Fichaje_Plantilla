@@ -25,9 +25,11 @@ SOURCES += \
     source/main.cpp \
     source/connectionmanager.cpp \
     source/connection.cpp \
-    source/databaseinterface.cpp
+    source/databaseinterface.cpp \
+    source/actionjson.cpp
 
 HEADERS += \
     header/connectionmanager.h \
     header/connection.h \
-    header/databaseinterface.h
+    header/databaseinterface.h \
+    header/actionjson.h

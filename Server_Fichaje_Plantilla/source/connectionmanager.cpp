@@ -5,6 +5,7 @@
 #include "connectionmanager.h"
 #include "connection.h"
 #include "databaseinterface.h"
+#include "actionjson.h"
 
 ConnectionManager *ConnectionManager::m_instance = NULL;
 
@@ -69,7 +70,7 @@ void ConnectionManager::webSocketDisconnected() {
 
 void ConnectionManager::processMessage(const QString &message) {
     Connection *connection = qobject_cast<Connection *>(sender());
-
+    ActionJson(message, connection);
     // TODO: programar respuestas
 }
 

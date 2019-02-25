@@ -19,6 +19,8 @@ bool EmployeeInfo::isValid(QString &reason) {
     }
 
     // EAN13 debe ser todo números
+    // No se puede pasar todo el QString a un int ya que un numero de 13 digitos es
+    // demasiado grande
     for (int i = 0; i < m_eanCode.length(); i++) {
         if (!m_eanCode.at(i).isDigit()) {
             reason = "El código debe ser un número";
@@ -39,6 +41,7 @@ QString EmployeeInfo::toJson() {
     QJsonObject json;
 
     json.insert("isAdmin", QJsonValue(false));
+    json.insert("action", QJsonValue("FICHAR"));
     json.insert("empleado_id", QJsonValue(m_eanCode));
     json.insert("empleado_password", QJsonValue(m_password));
 
