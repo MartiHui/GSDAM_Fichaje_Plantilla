@@ -8,29 +8,39 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
+
+    m_connection = new ServerConnection("ws://localhost:1234");
+    connect(m_connection, SIGNAL(messageReceived(QString)), this, SLOT(messageReceived(QString)));
 }
 
 MainWindow::~MainWindow() {
+    delete m_connection;
     delete ui;
 }
 
 void MainWindow::on_ficharBtn_clicked() {
-    EmployeeInfo info{ui->userIdentification->text(), ui->userPassword->text()};
-
-    QString errorMsg;
-    if (info.isValid(errorMsg)) {
-        ui->userIdentification->clear();
-        ui->userPassword->clear();
-        ui->ficharBtn->setEnabled(false);
-
-        m_connection->sendMessage(info.toJson());
-    } else {
+    if (!m_connection->isValid()) {
         QMessageBox msg;
-        msg.setText("El código de identificación no es correcto. " + errorMsg);
+        msg.setText("No estás conectado al servidor");
         msg.exec();
+    } else {
+        EmployeeInfo info{ui->userIdentification->text(), ui->userPassword->text()};
+
+        QString errorMsg;
+        if (info.isValid(errorMsg)) {
+            ui->userIdentification->clear();
+            ui->userPassword->clear();
+            ui->ficharBtn->setEnabled(false);
+
+            m_connection->sendMessage(info.toJson());
+        } else {
+            QMessageBox msg;
+            msg.setText("El código de identificación no es correcto. " + errorMsg);
+            msg.exec();
+        }
     }
 }
 
-void MainWindow::close() {
-    m_connection->close();
+void MainWindow::messageReceived(QString message) {
+
 }

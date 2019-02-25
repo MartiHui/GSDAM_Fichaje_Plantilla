@@ -38,6 +38,7 @@ bool EmployeeInfo::isValid(QString &reason) {
 QString EmployeeInfo::toJson() {
     QJsonObject json;
 
+    json.insert("isAdmin", QJsonValue(false));
     json.insert("empleado_id", QJsonValue(m_eanCode));
     json.insert("empleado_password", QJsonValue(m_password));
 

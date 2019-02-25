@@ -15,13 +15,13 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void close(); // Cierra la conexion con el servidor
 
 private:
     ServerConnection *m_connection;
 
 private slots:
     void on_ficharBtn_clicked();
+    void messageReceived(QString message);
 
 private:
     Ui::MainWindow *ui;

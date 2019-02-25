@@ -26,6 +26,6 @@ void ServerConnection::sendMessage(QString message) {
     m_webSocket->sendTextMessage(message);
 }
 
-void ServerConnection::close() {
-    m_webSocket->close();
+bool ServerConnection::isValid() {
+    return m_webSocket->isValid();
 }

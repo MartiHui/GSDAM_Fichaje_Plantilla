@@ -6,8 +6,5 @@ int main(int argc, char *argv[]) {
     MainWindow w;
     w.show();
 
-    int exitValue = a.exec();
-    w.close();
-
-    return exitValue;
+    return a.exec();
 }

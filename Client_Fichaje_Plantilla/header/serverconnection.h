@@ -15,7 +15,7 @@ public:
     explicit ServerConnection(QString serverUrl);
     ~ServerConnection();
     void sendMessage(QString message);
-    void close();
+    bool isValid();
 
 private:
     QWebSocket *m_webSocket;
