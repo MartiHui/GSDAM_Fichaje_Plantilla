@@ -2,6 +2,7 @@
 #define CONNECTION_H
 
 #include <QObject>
+#include <QJsonObject>
 
 class QWebSocket;
 
@@ -12,8 +13,10 @@ class Connection : public QObject {
 public:
     explicit Connection(QWebSocket *webSocket);
     ~Connection();
-
     QWebSocket* getWebSocket();
+    void sendJson(const QJsonObject &json);
+
+    bool m_isAdmin{false};
 
 private:
     QWebSocket *m_webSocket;

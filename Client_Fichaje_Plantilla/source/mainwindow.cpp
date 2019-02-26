@@ -1,4 +1,7 @@
 #include <QMessageBox>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -42,5 +45,16 @@ void MainWindow::on_ficharBtn_clicked() {
 }
 
 void MainWindow::messageReceived(QString message) {
+    ui->ficharBtn->setEnabled(true);
 
+    QJsonValue requestResult = QJsonDocument::fromJson(message.toUtf8()).object()["isRequestSuccesful"];
+    QMessageBox msg;
+
+    if (requestResult == QJsonValue::Undefined || !requestResult.toBool()) {
+        msg.setText("Ha habido problemas con tu solicitud");
+    } else {
+        msg.setText("Solicitud realizada correctamente");
+    }
+
+    msg.exec();
 }

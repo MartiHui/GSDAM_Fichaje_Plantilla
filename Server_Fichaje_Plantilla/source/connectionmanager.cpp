@@ -6,6 +6,7 @@
 #include "connection.h"
 #include "databaseinterface.h"
 #include "actionjson.h"
+#include "databaseinterface.h"
 
 ConnectionManager *ConnectionManager::m_instance = NULL;
 
@@ -32,6 +33,7 @@ void ConnectionManager::startServer() {
 
     if (m_webSocketServer->listen(QHostAddress::Any, m_port)) {
         qDebug() << "Servidor iniciado. Puerto: " << m_port;
+        DatabaseInterface::getInstance();
 
         connect(m_webSocketServer, SIGNAL(newConnection()),
                 this, SLOT(webSocketConnected()));
@@ -71,7 +73,6 @@ void ConnectionManager::webSocketDisconnected() {
 void ConnectionManager::processMessage(const QString &message) {
     Connection *connection = qobject_cast<Connection *>(sender());
     ActionJson(message, connection);
-    // TODO: programar respuestas
 }
 
 void ConnectionManager::close() {

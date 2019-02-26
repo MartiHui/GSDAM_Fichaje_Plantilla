@@ -1,4 +1,5 @@
 #include <QWebSocket>
+#include <QJsonDocument>
 
 #include "connection.h"
 
@@ -23,4 +24,10 @@ void Connection::onMessageReceived(const QString &message) {
 
 void Connection::onDisconnect() {
     emit disconnected();
+}
+
+void Connection::sendJson(const QJsonObject &json) {
+    QJsonDocument doc{json};
+
+    m_webSocket->sendTextMessage(QString(doc.toJson()));
 }

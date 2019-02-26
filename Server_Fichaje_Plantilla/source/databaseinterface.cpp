@@ -29,6 +29,45 @@ DatabaseInterface::DatabaseInterface() {
     if (!m_database.open()) {
         qDebug() << "Problemas al conectarse con la base de datos.";
         qDebug() << m_database.lastError();
+    } else {
+        qDebug() << "Conectado a la base de datos.";
     }
 }
 
+bool DatabaseInterface::doesUserExist(QString eanCode, QString password, bool *isAdmin) {
+    QSqlQuery query;
+    query.prepare("SELECT empleado_is_admin FROM empleados WHERE empleado_id = ? AND "
+                  "empleado_password = ? AND empleado_is_active IS TRUE");
+    query.bindValue(0, eanCode);
+    query.bindValue(1, password);
+    query.exec();
+
+    if (query.next()) {
+        if (isAdmin) {
+            *isAdmin = query.value("empleado_isAdmin").toBool();
+        }
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void DatabaseInterface::punchIoEmployee(QString eanCode) {
+    QSqlQuery query;
+    query.prepare("SELECT fichaje_id, fecha_salida FROM fichajes WHERE empleado_id = ? "
+                  "ORDER BY fecha_salida DESC LIMIT 1");
+    query.bindValue(0, eanCode);
+    query.exec();
+
+    if (query.next() && query.value("fecha_salida").toDateTime().toString() == "") {
+        QSqlQuery update;
+        update.prepare("UPDATE fichajes SET fecha_salida = now() WHERE fichaje_id = ?");
+        update.bindValue(0, query.value("fichaje_id").toInt());
+        update.exec();
+    } else {
+        QSqlQuery insert;
+        insert.prepare("INSERT INTO fichajes(empleado_id, fecha_entrada) VALUES(?, now())");
+        insert.bindValue(0, eanCode);
+        insert.exec();
+    }
+}

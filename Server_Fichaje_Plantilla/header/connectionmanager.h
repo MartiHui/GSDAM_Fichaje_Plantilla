@@ -21,7 +21,7 @@ private:
     explicit ConnectionManager(quint16 port);
     ~ConnectionManager();
 
-    static ConnectionManager *m_instance; // La única instancia de la clase
+    static ConnectionManager* m_instance; // La única instancia de la clase
     quint16 m_port; // Puerto en el que inicializar el servidor
     QWebSocketServer *m_webSocketServer;
     QList<Connection *> m_connections; // Lista con todas las conexiones activas

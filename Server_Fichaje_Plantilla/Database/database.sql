@@ -26,8 +26,8 @@ SET default_with_oids = false;
 CREATE TABLE public.empleados (
     empleado_id character varying NOT NULL,
     empleado_password character varying NOT NULL,
-    "empleado_isAdmin" boolean DEFAULT false NOT NULL,
-    "empleado_isActive" boolean DEFAULT true NOT NULL
+    empleado_is_admin boolean DEFAULT false NOT NULL,
+    empleado_is_active boolean DEFAULT true NOT NULL
 );
 
 
