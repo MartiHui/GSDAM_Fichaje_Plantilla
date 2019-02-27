@@ -15,9 +15,8 @@ public:
     void close();
 
     // Comprueba si la combinacion de identificacion y contraseña existen
-    // en la base de datos. Opcionalmente se le puede pasar una referencia
-    // a un bool que almacenara si el usuario es administrador o no
-    bool doesUserExist(QString eanCode, QString password, bool *isAdmin=nullptr);
+    // en la base de datos.
+    bool doesUserExist(QString eanCode, QString password);
     void punchIoEmployee(QString eanCode);
 
 private:

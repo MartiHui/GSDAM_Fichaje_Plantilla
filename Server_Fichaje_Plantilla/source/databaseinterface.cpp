@@ -34,22 +34,15 @@ DatabaseInterface::DatabaseInterface() {
     }
 }
 
-bool DatabaseInterface::doesUserExist(QString eanCode, QString password, bool *isAdmin) {
+bool DatabaseInterface::doesUserExist(QString eanCode, QString password) {
     QSqlQuery query;
-    query.prepare("SELECT empleado_is_admin FROM empleados WHERE empleado_id = ? AND "
+    query.prepare("SELECT empleado_id FROM empleados WHERE empleado_id = ? AND "
                   "empleado_password = ? AND empleado_is_active IS TRUE");
     query.bindValue(0, eanCode);
     query.bindValue(1, password);
     query.exec();
 
-    if (query.next()) {
-        if (isAdmin) {
-            *isAdmin = query.value("empleado_isAdmin").toBool();
-        }
-        return true;
-    } else {
-        return false;
-    }
+    return query.next();
 }
 
 void DatabaseInterface::punchIoEmployee(QString eanCode) {
