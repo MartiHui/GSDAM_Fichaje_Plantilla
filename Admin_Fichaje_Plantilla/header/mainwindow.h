@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVector>
+
+#include "datastructs.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +20,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    void setTablesHeader();
+    void fillRegistro(QVector<Registro> registros);
+    void fillHistorial(QVector<Registro> registros);
+
 };
 
 #endif // MAINWINDOW_H
