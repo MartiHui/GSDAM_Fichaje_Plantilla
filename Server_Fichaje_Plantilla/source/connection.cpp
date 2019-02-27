@@ -27,7 +27,5 @@ void Connection::onDisconnect() {
 }
 
 void Connection::sendJson(const QJsonObject &json) {
-    QJsonDocument doc{json};
-
-    m_webSocket->sendTextMessage(QString(doc.toJson()));
+    m_webSocket->sendTextMessage(QString(json.toJson()));
 }

@@ -30,12 +30,14 @@ INCLUDEPATH += ./source \
 SOURCES += \
         source/main.cpp \
         source/mainwindow.cpp \
-    source/serverconnection.cpp
+    source/serverconnection.cpp \
+    source/actionjson.cpp
 
 HEADERS += \
         header/mainwindow.h \
     header/datastructs.h \
-    header/serverconnection.h
+    header/serverconnection.h \
+    header/actionjson.h
 
 FORMS += \
         ui/mainwindow.ui

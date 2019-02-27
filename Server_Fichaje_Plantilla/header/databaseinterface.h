@@ -18,6 +18,7 @@ public:
     // en la base de datos.
     bool doesUserExist(QString eanCode, QString password);
     void punchIoEmployee(QString eanCode);
+    void getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros);
 
 private:
     explicit DatabaseInterface();

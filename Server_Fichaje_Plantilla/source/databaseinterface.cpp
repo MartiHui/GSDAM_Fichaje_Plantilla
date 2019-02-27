@@ -64,3 +64,16 @@ void DatabaseInterface::punchIoEmployee(QString eanCode) {
         insert.exec();
     }
 }
+
+void DatabaseInterface::getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros) {
+    QSqlQuery query;
+    query.prepare("SELECT empleado_id, fecha_entrada, fecha_salida FROM fichajes "
+                  "ORDER BY fecha_salida DESC");
+    query.exec();
+
+    while (query.next()) {
+        registros->append(qMakePair(query.value("empleado_id").toString(),
+                                    qMakePair(query.value("fecha_entrada").toDateTime().toString(),
+                                              query.value("fecha_salida").toDateTime().toString()));
+    }
+}

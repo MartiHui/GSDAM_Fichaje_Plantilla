@@ -11,6 +11,7 @@ enum class ActionType {
     ADMIN_CONNECT, // Comprueba las credenciales de administrador
     PUNCH_IO, // Fichar empleado
     ACTU_EMPLEADO, // Cambiar informacion de empleado
+    REGISTROS_INFO, // Peticion para conseguir la informacion de los registros
 };
 
 // La clase ActionJson parsea un archivo JSON y actua de acuerdo a sus contenidos
@@ -29,6 +30,7 @@ private:
     void processRequest(); // Actua según el ActionType del documento
     void sendRequestSuccess(bool isSuccesful);
     void punchIoEmployee();
+    void sendRegistrosInfo();
 };
 
 #endif // ACTIONJSON_H

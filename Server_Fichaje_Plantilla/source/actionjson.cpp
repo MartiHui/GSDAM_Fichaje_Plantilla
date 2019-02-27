@@ -1,4 +1,5 @@
 #include <QJsonDocument>
+#include <QJsonArray>
 #include <QJsonValue>
 
 #include "actionjson.h"
@@ -18,6 +19,8 @@ void ActionJson::setActionType() {
         QString actionStr = action.toString();
         if (actionStr == "FICHAR") {
             m_actionType = ActionType::PUNCH_IO;
+        } else if (actionStr == "REGISTROS_INFO") {
+            m_actionType = ActionType::REGISTROS_INFO;
         }
     } else {
         m_actionType = ActionType::INVALID;
@@ -33,6 +36,14 @@ void ActionJson::processRequest() {
     case ActionType::PUNCH_IO:
         punchIoEmployee();
         break;
+
+    case ActionType::REGISTROS_INFO:
+        if (m_connection->m_isAdmin) {
+            sendRegistrosInfo();
+        } else {
+            sendRequestSuccess(false);
+        }
+        break;
     }
 }
 
@@ -41,7 +52,7 @@ void ActionJson::sendRequestSuccess(bool isSuccesful) {
 
     json.insert("isRequestSuccesful", QJsonValue(isSuccesful));
 
-    m_connection->sendJson(json);
+    m_connection->sendJson(QJsonDocument{json});
 }
 
 void ActionJson::punchIoEmployee() {
@@ -57,4 +68,22 @@ void ActionJson::punchIoEmployee() {
     }
 
     sendRequestSuccess(requestResult);
+}
+
+void ActionJson::sendRegistrosInfo() {
+    QVector<QPair<QString, QPair<QString, QString> > > registros;
+    DatabaseInterface::getInstance()->getRegistrosInfo(registros);
+
+    QJsonArray json;
+    for (auto registro : registros) {
+        QJsonObject object;
+
+        object.insert("empleado_id", QJsonValue(registro.first));
+        object.insert("fecha_entrada", QJsonValue(registro.second.first));
+        object.insert("fecha_salida", QJsonValue(registro.second.second));
+
+        json.append(object);
+    }
+
+    m_connection->sendJson(QJsonDocument{json});
 }
