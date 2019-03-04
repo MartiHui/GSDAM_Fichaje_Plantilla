@@ -5,6 +5,7 @@
 #include <QVector>
 
 #include "datastructs.h"
+#include "serverconnection.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,12 +20,17 @@ public:
     ~MainWindow();
 
 private:
+    ServerConnection *m_connection;
     Ui::MainWindow *ui;
 
     void setTablesHeader();
-    void fillRegistro(QVector<Registro> registros);
-    void fillHistorial(QVector<Registro> registros);
+    void fillRegistro(QVector<Registro> &registros);
+    void fillHistorial(QVector<Registro> &registros);
 
+private slots:
+    void messageReceived(QString message);
+
+    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

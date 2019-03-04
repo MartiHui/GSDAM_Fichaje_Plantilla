@@ -10,29 +10,33 @@ ActionJson::ActionJson(QString json) {
 }
 
 void ActionJson::setActionType() {
-    QJsonValue action = m_json["action"];
+    QJsonValue action = m_json.object()["action"];
 
     if (action != QJsonValue::Undefined) {
         QString actionStr = action.toString();
         if (actionStr == "CONNECTION") {
             m_actionType = ActionType::CONNECTION;
-        } else if (actionStr == "INFO") {
-            m_actionType = ActionType::INFO;
+        } else if (actionStr == "REGISTROS_INFO") {
+            m_actionType = ActionType::REGISTROS_INFO;
         }
     } else {
         m_actionType = ActionType::INVALID;
     }
 }
 
+ActionType ActionJson::getActionType() {
+    return m_actionType;
+}
+
 bool ActionJson::getRegistrosInfo(QVector<Registro> *registros, QVector<Registro> *historial) {
     bool validJson{true};
 
-    if (m_json.isArray()) {
-        QJsonArray registrosArray = m_json.array();
+    if (m_json.object()["registros"].isArray()) {
+        QJsonArray registrosArray = m_json.object()["registros"].toArray();
 
         for (int i = 0; i < registrosArray.count(); i++) {
             // Si esta posicion tiene un Objeto
-            if (registrosArray.at(i).type() == QVariantMap) {
+            if (registrosArray.at(i).type() == QJsonValue::Object) {
                 QJsonObject registro = registrosArray.at(i).toObject();
 
                 // Si tiene todos los campos que esperamos

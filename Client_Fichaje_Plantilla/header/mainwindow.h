@@ -18,13 +18,12 @@ public:
 
 private:
     ServerConnection *m_connection;
+    Ui::MainWindow *ui;
 
 private slots:
     void on_ficharBtn_clicked();
     void messageReceived(QString message);
 
-private:
-    Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H

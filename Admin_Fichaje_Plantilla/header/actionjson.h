@@ -10,7 +10,7 @@
 enum class ActionType {
     INVALID,
     CONNECTION,
-    INFO,
+    REGISTROS_INFO,
 };
 
 // La clase ActionJson sirve tanto para crear archivos JSON que enviar al servidor
@@ -26,6 +26,7 @@ public:
     // historial. La función devuelve true si el JSON es válido
     bool getRegistrosInfo(QVector<Registro> *registros, QVector<Registro> *historial);
     static QString askRegistrosInfo();
+    ActionType getActionType();
 
 private:
     QJsonDocument m_json;

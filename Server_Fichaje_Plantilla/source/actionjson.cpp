@@ -38,11 +38,11 @@ void ActionJson::processRequest() {
         break;
 
     case ActionType::REGISTROS_INFO:
-        if (m_connection->m_isAdmin) {
+        //if (m_connection->m_isAdmin) {
             sendRegistrosInfo();
-        } else {
-            sendRequestSuccess(false);
-        }
+        //} else {
+         //   sendRequestSuccess(false);
+        //}
         break;
     }
 }
@@ -74,7 +74,10 @@ void ActionJson::sendRegistrosInfo() {
     QVector<QPair<QString, QPair<QString, QString> > > registros;
     DatabaseInterface::getInstance()->getRegistrosInfo(registros);
 
-    QJsonArray json;
+    QJsonObject json;
+    json.insert("action", QJsonValue("REGISTROS_INFO"));
+
+    QJsonArray registrosJson;
     for (auto registro : registros) {
         QJsonObject object;
 
@@ -82,8 +85,10 @@ void ActionJson::sendRegistrosInfo() {
         object.insert("fecha_entrada", QJsonValue(registro.second.first));
         object.insert("fecha_salida", QJsonValue(registro.second.second));
 
-        json.append(object);
+        registrosJson.append(object);
     }
+
+    json.insert("registros", QJsonValue(registrosJson));
 
     m_connection->sendJson(QJsonDocument{json});
 }

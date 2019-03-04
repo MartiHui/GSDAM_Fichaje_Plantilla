@@ -72,8 +72,8 @@ void DatabaseInterface::getRegistrosInfo(QVector<QPair<QString, QPair<QString, Q
     query.exec();
 
     while (query.next()) {
-        registros->append(qMakePair(query.value("empleado_id").toString(),
+        registros.append(qMakePair(query.value("empleado_id").toString(),
                                     qMakePair(query.value("fecha_entrada").toDateTime().toString(),
-                                              query.value("fecha_salida").toDateTime().toString()));
+                                              query.value("fecha_salida").toDateTime().toString())));
     }
 }
