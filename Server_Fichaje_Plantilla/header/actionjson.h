@@ -12,6 +12,7 @@ enum class ActionType {
     PUNCH_IO, // Fichar empleado
     ACTU_EMPLEADO, // Cambiar informacion de empleado
     REGISTROS_INFO, // Peticion para conseguir la informacion de los registros
+    EMPLEADOS_INFO,
 };
 
 // La clase ActionJson parsea un archivo JSON y actua de acuerdo a sus contenidos
@@ -32,6 +33,7 @@ private:
     void punchIoEmployee();
     void sendRegistrosInfo();
     void checkAdminCredentials();
+    void sendEmpleadosInfo();
 };
 
 #endif // ACTIONJSON_H

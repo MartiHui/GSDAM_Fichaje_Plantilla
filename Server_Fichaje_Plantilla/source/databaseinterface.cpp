@@ -88,3 +88,13 @@ bool DatabaseInterface::doesAdminExist(QString username, QString password) {
 
     return query.next();
 }
+
+void DatabaseInterface::getEmpleadosInfo(QVector<QString> &empleados) {
+    QSqlQuery query;
+    query.prepare("SELECT empleado_id FROM empleados WHERE empleado_is_active IS TRUE");
+    query.exec();
+
+    while (query.next()) {
+        empleados.append(query.value("empleado_id").toString());
+    }
+}

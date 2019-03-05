@@ -26,12 +26,16 @@ private:
     void setTablesHeader();
     void fillRegistro(QVector<Registro> &registros);
     void fillHistorial(QVector<Registro> &registros);
+    void fillEmpleados(QVector<QString> &empleados);
     void updateRegistros();
+    void updateEmpleados();
 
 private slots:
     void messageReceived(QString message);
 
     void on_pushButton_clicked();
+    void on_removeEmployee_clicked();
+    void on_createEmployee_clicked();
 };
 
 #endif // MAINWINDOW_H

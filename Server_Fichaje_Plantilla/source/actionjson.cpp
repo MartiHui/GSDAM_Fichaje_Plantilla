@@ -24,6 +24,8 @@ void ActionJson::setActionType() {
             m_actionType = ActionType::REGISTROS_INFO;
         } else if (actionStr == "ADMIN_CONNECT") {
             m_actionType = ActionType::ADMIN_CONNECT;
+        } else if (actionStr == "EMPLEADOS_INFO") {
+            m_actionType = ActionType::EMPLEADOS_INFO;
         }
     } else {
         m_actionType = ActionType::INVALID;
@@ -51,6 +53,13 @@ void ActionJson::processRequest() {
     case ActionType::ADMIN_CONNECT:
         checkAdminCredentials();
         break;
+
+    case ActionType::EMPLEADOS_INFO:
+        if (m_connection->m_isAdmin) {
+            sendEmpleadosInfo();
+        } else {
+            sendRequestSuccess(false);
+        }
     }
 }
 
@@ -122,4 +131,21 @@ void ActionJson::checkAdminCredentials() {
     answer.insert("result", QJsonValue(success));
 
     m_connection->sendJson(QJsonDocument{answer});
+}
+
+void ActionJson::sendEmpleadosInfo() {
+    QVector<QString> empleados;
+    DatabaseInterface::getInstance()->getEmpleadosInfo(empleados);
+
+    QJsonObject json;
+    json.insert("action", QJsonValue("EMPLEADOS_INFO"));
+
+    QJsonArray empleadosJson;
+    for (QString empleado : empleados) {
+        empleadosJson.append(QJsonValue(empleado));
+    }
+
+    json.insert("empleados", QJsonValue(empleadosJson));
+
+    m_connection->sendJson(QJsonDocument{json});
 }

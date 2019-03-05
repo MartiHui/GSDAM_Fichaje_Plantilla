@@ -1,6 +1,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QDebug>
 
 #include "actionjson.h"
 
@@ -20,6 +21,8 @@ void ActionJson::setActionType() {
             m_actionType = ActionType::REGISTROS_INFO;
         } else if (actionStr == "UPDATE") {
             m_actionType = ActionType::UPDATE;
+        } else if (actionStr == "EMPLEADOS_INFO") {
+            m_actionType = ActionType::EMPLEADOS_INFO;
         }
     } else {
         m_actionType = ActionType::INVALID;
@@ -70,6 +73,27 @@ bool ActionJson::getRegistrosInfo(QVector<Registro> *registros, QVector<Registro
     return validJson;
 }
 
+bool ActionJson::getEmpleadosInfo(QVector<QString> *empleados) {
+    bool validJson{true};
+
+    if (m_json.object()["empleados"].isArray()) {
+        QJsonArray empleadosArray = m_json.object()["empleados"].toArray();
+
+        for (int i = 0; i < empleadosArray.count(); i++) {
+            if (empleadosArray.at(i).type() == QJsonValue::String) {
+                empleados->append(empleadosArray.at(i).toString());
+            } else {
+                validJson = false;
+                break;
+            }
+        }
+    } else {
+        validJson = false;
+    }
+
+    return validJson;
+}
+
 bool ActionJson::connectAdminSuccessful() {
     QJsonValue value = m_json.object()["result"];
     bool result{false};
@@ -95,6 +119,14 @@ QString ActionJson::connectAdmin(QString name, QString password) {
     ask.insert("action", QJsonValue("ADMIN_CONNECT"));
     ask.insert("username", QJsonValue(name));
     ask.insert("password", QJsonValue(password));
+
+    return QJsonDocument(ask).toJson();
+}
+
+QString ActionJson::askEmpleadosInfo() {
+    QJsonObject ask;
+
+    ask.insert("action", QJsonValue("EMPLEADOS_INFO"));
 
     return QJsonDocument(ask).toJson();
 }

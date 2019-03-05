@@ -11,6 +11,7 @@ enum class ActionType {
     INVALID,
     CONNECTION,
     REGISTROS_INFO,
+    EMPLEADOS_INFO,
     UPDATE,
 };
 
@@ -26,10 +27,13 @@ public:
     // vector registros si no tienen fecha de salida, de lo contrario, en el vector
     // historial. La función devuelve true si el JSON es válido
     bool getRegistrosInfo(QVector<Registro> *registros, QVector<Registro> *historial);
+    bool getEmpleadosInfo(QVector<QString> *empleados);
     bool connectAdminSuccessful();
+    ActionType getActionType();
+
     static QString askRegistrosInfo();
     static QString connectAdmin(QString name, QString password);
-    ActionType getActionType();
+    static QString askEmpleadosInfo();
 
 private:
     QJsonDocument m_json;

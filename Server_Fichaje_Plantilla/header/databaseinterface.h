@@ -20,6 +20,7 @@ public:
     void punchIoEmployee(QString eanCode);
     void getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros);
     bool doesAdminExist(QString username, QString password);
+    void getEmpleadosInfo(QVector<QString> &empleados);
 
 private:
     explicit DatabaseInterface();

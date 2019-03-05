@@ -46,6 +46,14 @@ void MainWindow::fillHistorial(QVector<Registro> &registros) {
     }
 }
 
+void MainWindow::fillEmpleados(QVector<QString> &empleados) {
+    ui->employeeList->clear();
+
+    for (QString empleado : empleados) {
+        ui->employeeList->addItem(empleado);
+    }
+}
+
 void MainWindow::messageReceived(QString message) {
     ActionJson action{message};
     QMessageBox msg;
@@ -61,6 +69,7 @@ void MainWindow::messageReceived(QString message) {
             ui->tabWidget->setEnabled(true);
             ui->pushButton->setEnabled(true);
             updateRegistros();
+            updateEmpleados();
         } else {
             msg.setText("Credenciales incorrectas");
             msg.exec();
@@ -76,17 +85,33 @@ void MainWindow::messageReceived(QString message) {
             fillRegistro(registrosAbiertos);
             fillHistorial(registroHistorial);
         }
-    }
+
         break;
+    }
 
     case ActionType::UPDATE:
         updateRegistros();
         break;
+
+    case ActionType::EMPLEADOS_INFO:
+    {
+        QVector<QString> empleados;
+
+        if (action.getEmpleadosInfo(&empleados)) {
+            fillEmpleados(empleados);
+        }
+
+        break;
+    }
     }
 }
 
 void MainWindow::updateRegistros() {
     m_connection->sendMessage(ActionJson::askRegistrosInfo());
+}
+
+void MainWindow::updateEmpleados() {
+    m_connection->sendMessage(ActionJson::askEmpleadosInfo());
 }
 
 void MainWindow::on_pushButton_clicked() {
@@ -98,4 +123,12 @@ void MainWindow::on_pushButton_clicked() {
     m_connection->sendMessage(ActionJson::connectAdmin(username, password));
 
     ui->pushButton->setEnabled(false);
+}
+
+void MainWindow::on_removeEmployee_clicked() {
+
+}
+
+void MainWindow::on_createEmployee_clicked() {
+
 }
