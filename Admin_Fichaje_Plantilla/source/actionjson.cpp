@@ -68,8 +68,31 @@ bool ActionJson::getRegistrosInfo(QVector<Registro> *registros, QVector<Registro
     return validJson;
 }
 
+bool ActionJson::connectAdminSuccessful() {
+    QJsonValue value = m_json.object()["result"];
+    bool result{false};
+
+    if (value.type() == QJsonValue::Bool) {
+        result = value.toBool();
+    }
+
+    return result;
+}
+
 QString ActionJson::askRegistrosInfo() {
     QJsonObject ask;
+
     ask.insert("action", QJsonValue("REGISTROS_INFO"));
+
+    return QJsonDocument(ask).toJson();
+}
+
+QString ActionJson::connectAdmin(QString name, QString password) {
+    QJsonObject ask;
+
+    ask.insert("action", QJsonValue("ADMIN_CONNECT"));
+    ask.insert("username", QJsonValue(name));
+    ask.insert("password", QJsonValue(password));
+
     return QJsonDocument(ask).toJson();
 }

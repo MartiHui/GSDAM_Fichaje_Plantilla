@@ -77,3 +77,14 @@ void DatabaseInterface::getRegistrosInfo(QVector<QPair<QString, QPair<QString, Q
                                               query.value("fecha_salida").toDateTime().toString())));
     }
 }
+
+bool DatabaseInterface::doesAdminExist(QString username, QString password) {
+    QSqlQuery query;
+    query.prepare("SELECT admin_id FROM admins WHERE admin_user = ? AND "
+                  "admin_password = ? AND admin_activo IS TRUE LIMIT 1");
+    query.bindValue(0, username);
+    query.bindValue(1, password);
+    query.exec();
+
+    return query.next();
+}

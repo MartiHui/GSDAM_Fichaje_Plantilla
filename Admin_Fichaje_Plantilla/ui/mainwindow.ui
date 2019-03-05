@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="username">
     <property name="geometry">
      <rect>
       <x>90</x>
@@ -24,7 +24,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="userpassword">
     <property name="geometry">
      <rect>
       <x>380</x>
@@ -83,7 +83,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="registrosTab">
      <attribute name="title">
@@ -98,6 +98,22 @@
         <height>331</height>
        </rect>
       </property>
+      <property name="columnCount">
+       <number>2</number>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>200</number>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Fecha de entrada</string>
+       </property>
+      </column>
      </widget>
     </widget>
     <widget class="QWidget" name="historialTab">
@@ -113,6 +129,24 @@
         <height>341</height>
        </rect>
       </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>200</number>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Fecha de entrada</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Fecha de salida</string>
+       </property>
+      </column>
      </widget>
     </widget>
     <widget class="QWidget" name="empleadosTab">

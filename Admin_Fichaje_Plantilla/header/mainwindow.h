@@ -26,6 +26,7 @@ private:
     void setTablesHeader();
     void fillRegistro(QVector<Registro> &registros);
     void fillHistorial(QVector<Registro> &registros);
+    void updateRegistros();
 
 private slots:
     void messageReceived(QString message);

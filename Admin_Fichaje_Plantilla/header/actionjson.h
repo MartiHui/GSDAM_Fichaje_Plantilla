@@ -25,7 +25,9 @@ public:
     // vector registros si no tienen fecha de salida, de lo contrario, en el vector
     // historial. La función devuelve true si el JSON es válido
     bool getRegistrosInfo(QVector<Registro> *registros, QVector<Registro> *historial);
+    bool connectAdminSuccessful();
     static QString askRegistrosInfo();
+    static QString connectAdmin(QString name, QString password);
     ActionType getActionType();
 
 private:

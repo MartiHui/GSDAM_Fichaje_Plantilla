@@ -31,6 +31,7 @@ private:
     void sendRequestSuccess(bool isSuccesful);
     void punchIoEmployee();
     void sendRegistrosInfo();
+    void checkAdminCredentials();
 };
 
 #endif // ACTIONJSON_H

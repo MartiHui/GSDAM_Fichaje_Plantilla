@@ -21,6 +21,8 @@ void ActionJson::setActionType() {
             m_actionType = ActionType::PUNCH_IO;
         } else if (actionStr == "REGISTROS_INFO") {
             m_actionType = ActionType::REGISTROS_INFO;
+        } else if (actionStr == "ADMIN_CONNECT") {
+            m_actionType = ActionType::ADMIN_CONNECT;
         }
     } else {
         m_actionType = ActionType::INVALID;
@@ -38,11 +40,15 @@ void ActionJson::processRequest() {
         break;
 
     case ActionType::REGISTROS_INFO:
-        //if (m_connection->m_isAdmin) {
+        if (m_connection->m_isAdmin) {
             sendRegistrosInfo();
-        //} else {
-         //   sendRequestSuccess(false);
-        //}
+        } else {
+            sendRequestSuccess(false);
+        }
+        break;
+
+    case ActionType::ADMIN_CONNECT:
+        checkAdminCredentials();
         break;
     }
 }
@@ -91,4 +97,22 @@ void ActionJson::sendRegistrosInfo() {
     json.insert("registros", QJsonValue(registrosJson));
 
     m_connection->sendJson(QJsonDocument{json});
+}
+
+void ActionJson::checkAdminCredentials() {
+    bool success{false};
+
+    if (m_json["username"] != QJsonValue::Undefined &&
+            m_json["password"] != QJsonValue::Undefined) {
+        success = DatabaseInterface::getInstance()->
+                doesAdminExist(m_json["username"].toString(), m_json["password"].toString());
+        if (success) m_connection->m_isAdmin = true;
+    }
+
+
+    QJsonObject answer;
+    answer.insert("action", QJsonValue("CONNECTION"));
+    answer.insert("result", QJsonValue(success));
+
+    m_connection->sendJson(QJsonDocument{answer});
 }

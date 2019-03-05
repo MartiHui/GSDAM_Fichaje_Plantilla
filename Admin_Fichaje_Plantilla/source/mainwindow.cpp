@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QTimer>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -10,12 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->tabWidget->setEnabled(false);
 
     m_connection = new ServerConnection("ws://localhost:1234");
     connect(m_connection, SIGNAL(messageReceived(QString)),
             this, SLOT(messageReceived(QString)));
-
-    setTablesHeader();
 }
 
 MainWindow::~MainWindow()
@@ -23,20 +23,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setTablesHeader() {
-    QStringList registro;
-    registro << "ID" << "Fecha de entrada";
-    ui->registrosView->setHorizontalHeaderLabels(registro);
-    ui->registrosView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    QStringList historial;
-    historial << "ID" << "Fecha de entrada" << "Fecha de salida";
-    ui->historialView->setHorizontalHeaderLabels(historial);
-    ui->historialView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-}
-
 void MainWindow::fillRegistro(QVector<Registro> &registros) {
-    ui->registrosView->clear();
+    ui->registrosView->clearContents();
     int size = registros.count();
 
     ui->registrosView->setRowCount(size);
@@ -47,7 +35,7 @@ void MainWindow::fillRegistro(QVector<Registro> &registros) {
 }
 
 void MainWindow::fillHistorial(QVector<Registro> &registros) {
-    ui->historialView->clear();
+    ui->historialView->clearContents();
     int size = registros.count();
 
     ui->historialView->setRowCount(size);
@@ -67,7 +55,15 @@ void MainWindow::messageReceived(QString message) {
         break;
 
     case ActionType::CONNECTION:
-
+        if (action.connectAdminSuccessful()) {
+            ui->tabWidget->setEnabled(true);
+            ui->pushButton->setEnabled(true);
+            updateRegistros();
+        } else {
+            QMessageBox msg;
+            msg.setText("Credenciales incorrectas");
+            msg.exec();
+        }
         break;
 
     case ActionType::REGISTROS_INFO:
@@ -82,7 +78,17 @@ void MainWindow::messageReceived(QString message) {
     }
 }
 
-void MainWindow::on_pushButton_clicked()
-{
+void MainWindow::updateRegistros() {
     m_connection->sendMessage(ActionJson::askRegistrosInfo());
+}
+
+void MainWindow::on_pushButton_clicked() {
+    QString username = ui->username->text();
+    ui->username->setText("");
+    QString password = ui->userpassword->text();
+    ui->userpassword->setText("");
+
+    m_connection->sendMessage(ActionJson::connectAdmin(username, password));
+
+    ui->pushButton->setEnabled(false);
 }
