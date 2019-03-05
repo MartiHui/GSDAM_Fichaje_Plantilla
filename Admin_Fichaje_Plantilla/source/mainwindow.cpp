@@ -48,10 +48,12 @@ void MainWindow::fillHistorial(QVector<Registro> &registros) {
 
 void MainWindow::messageReceived(QString message) {
     ActionJson action{message};
+    QMessageBox msg;
 
     switch (action.getActionType()) {
     case ActionType::INVALID:
-
+        msg.setText("Ha habido algún problema");
+        msg.exec();
         break;
 
     case ActionType::CONNECTION:
@@ -60,13 +62,13 @@ void MainWindow::messageReceived(QString message) {
             ui->pushButton->setEnabled(true);
             updateRegistros();
         } else {
-            QMessageBox msg;
             msg.setText("Credenciales incorrectas");
             msg.exec();
         }
         break;
 
     case ActionType::REGISTROS_INFO:
+    {
         QVector<Registro> registrosAbiertos;
         QVector<Registro> registroHistorial;
 
@@ -74,6 +76,11 @@ void MainWindow::messageReceived(QString message) {
             fillRegistro(registrosAbiertos);
             fillHistorial(registroHistorial);
         }
+    }
+        break;
+
+    case ActionType::UPDATE:
+        updateRegistros();
         break;
     }
 }

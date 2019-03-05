@@ -11,6 +11,7 @@ enum class ActionType {
     INVALID,
     CONNECTION,
     REGISTROS_INFO,
+    UPDATE,
 };
 
 // La clase ActionJson sirve tanto para crear archivos JSON que enviar al servidor

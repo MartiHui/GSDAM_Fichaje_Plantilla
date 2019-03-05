@@ -78,3 +78,9 @@ void ConnectionManager::processMessage(const QString &message) {
 void ConnectionManager::close() {
     DatabaseInterface::getInstance()->close();
 }
+
+void ConnectionManager::sendMessageToAdmins(const QJsonDocument &message) {
+    for (Connection *con : m_connections) {
+        if (con->m_isAdmin) con->sendJson(message);
+    }
+}

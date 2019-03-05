@@ -18,6 +18,8 @@ void ActionJson::setActionType() {
             m_actionType = ActionType::CONNECTION;
         } else if (actionStr == "REGISTROS_INFO") {
             m_actionType = ActionType::REGISTROS_INFO;
+        } else if (actionStr == "UPDATE") {
+            m_actionType = ActionType::UPDATE;
         }
     } else {
         m_actionType = ActionType::INVALID;

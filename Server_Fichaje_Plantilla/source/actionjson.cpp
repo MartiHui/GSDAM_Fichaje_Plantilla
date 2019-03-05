@@ -4,6 +4,7 @@
 
 #include "actionjson.h"
 #include "databaseinterface.h"
+#include "connectionmanager.h"
 
 ActionJson::ActionJson(QString json, Connection *connection) :
         m_connection{connection} {
@@ -71,6 +72,12 @@ void ActionJson::punchIoEmployee() {
             requestResult = true;
             DatabaseInterface::getInstance()->punchIoEmployee(eanCode);
         }
+    }
+
+    if (requestResult) {
+        QJsonObject update;
+        update.insert("action", QJsonValue("UPDATE"));
+        ConnectionManager::getInstance()->sendMessageToAdmins(QJsonDocument{update});
     }
 
     sendRequestSuccess(requestResult);

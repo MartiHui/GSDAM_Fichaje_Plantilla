@@ -16,6 +16,7 @@ class ConnectionManager : public QObject {
 public:
     // Devuelve un puntero a la única instancia activa posible de la clase
     static ConnectionManager* getInstance(quint16 port=0);
+    void sendMessageToAdmins(const QJsonDocument &message);
 
 private:
     explicit ConnectionManager(quint16 port);
