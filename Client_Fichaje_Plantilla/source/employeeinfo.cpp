@@ -56,7 +56,6 @@ QString EmployeeInfo::calculateCheckSumDigit() {
         sum += m_eanCode.mid(i, 1).toInt() * ((i%2 == 0) ? 1 : 3);
     }
 
-    // No utilizamos el módulo porque en caso de que el resto fuera 0, el metodo devolveria 10,
-    // lo cual seria incorrecto, ya que deberia devolver 0
-    return QString::number(10*((sum/10)+1) - sum);
+    int mod = sum%10;
+    return QString::number((mod == 0) ? 0 : 10 - mod);
 }

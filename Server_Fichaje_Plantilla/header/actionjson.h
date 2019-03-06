@@ -10,7 +10,8 @@ enum class ActionType {
     INVALID,
     ADMIN_CONNECT, // Comprueba las credenciales de administrador
     PUNCH_IO, // Fichar empleado
-    ACTU_EMPLEADO, // Cambiar informacion de empleado
+    NEW_EMPLEADO,
+    DELETE_EMPLEADO,
     REGISTROS_INFO, // Peticion para conseguir la informacion de los registros
     EMPLEADOS_INFO,
 };

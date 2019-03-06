@@ -19,11 +19,11 @@ void ServerConnection::onConnected() {
             this, SLOT(onMessageReceived(QString)));
 }
 
-void ServerConnection::onMessageReceived(QString message) { qDebug() << "Recibido: " << message;
+void ServerConnection::onMessageReceived(QString message) { //qDebug() << "Recibido: " << message;
     emit messageReceived(message);
 }
 
-void ServerConnection::sendMessage(QString message) { qDebug() << "Enviado: " << message;
+void ServerConnection::sendMessage(QString message) { //qDebug() << "Enviado: " << message;
     m_webSocket->sendTextMessage(message);
 }
 

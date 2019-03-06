@@ -91,6 +91,7 @@ void MainWindow::messageReceived(QString message) {
 
     case ActionType::UPDATE:
         updateRegistros();
+        updateEmpleados();
         break;
 
     case ActionType::EMPLEADOS_INFO:
@@ -103,6 +104,10 @@ void MainWindow::messageReceived(QString message) {
 
         break;
     }
+
+    case ActionType::NEW_EMPLEADO:
+        updateEmpleados();
+        newEmpleado(action.getNewEmpleadoData());
     }
 }
 
@@ -126,9 +131,34 @@ void MainWindow::on_pushButton_clicked() {
 }
 
 void MainWindow::on_removeEmployee_clicked() {
-
+    if (ui->employeeList->currentItem()) {
+        ui->removeEmployee->setText("Dar de baja");
+        m_connection->sendMessage(ActionJson::deleteEmpleado(
+                                      ui->employeeList->currentItem()->text()));
+    }
 }
 
 void MainWindow::on_createEmployee_clicked() {
+    if (ui->newPassword->text() != "") {
+        m_connection->sendMessage(ActionJson::newEmpleado(ui->newPassword->text()));
+        ui->newPassword->setText("");
+    } else {
+        QMessageBox msg;
+        msg.setText("No puede tener contraseña vacía.");
+        msg.exec();
+    }
+}
 
+void MainWindow::on_employeeList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+{
+    if (current) {
+        ui->removeEmployee->setText("Dar de bajar " + current->text());
+    }
+}
+
+void MainWindow::newEmpleado(QPair<QString, QString> empleadoData) {
+    QMessageBox msg;
+    msg.setText("Nuevo empleado.\nID: " + empleadoData.first +
+                "\nContraseña: " + empleadoData.second);
+    msg.exec();
 }

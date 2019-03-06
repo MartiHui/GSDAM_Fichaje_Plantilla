@@ -13,6 +13,7 @@ enum class ActionType {
     REGISTROS_INFO,
     EMPLEADOS_INFO,
     UPDATE,
+    NEW_EMPLEADO,
 };
 
 // La clase ActionJson sirve tanto para crear archivos JSON que enviar al servidor
@@ -30,10 +31,13 @@ public:
     bool getEmpleadosInfo(QVector<QString> *empleados);
     bool connectAdminSuccessful();
     ActionType getActionType();
+    QPair<QString, QString> getNewEmpleadoData();
 
     static QString askRegistrosInfo();
     static QString connectAdmin(QString name, QString password);
     static QString askEmpleadosInfo();
+    static QString newEmpleado(QString password);
+    static QString deleteEmpleado(QString empleadoId);
 
 private:
     QJsonDocument m_json;

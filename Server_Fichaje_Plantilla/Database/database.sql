@@ -119,6 +119,45 @@ ALTER TABLE ONLY public.fichajes ALTER COLUMN fichaje_id SET DEFAULT nextval('pu
 
 
 --
+-- Data for Name: admins; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.admins (admin_id, admin_user, admin_password, admin_activo) FROM stdin;
+1	admin	admin	t
+\.
+
+
+--
+-- Data for Name: empleados; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.empleados (empleado_id, empleado_password, empleado_is_active) FROM stdin;
+\.
+
+
+--
+-- Data for Name: fichajes; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.fichajes (fichaje_id, empleado_id, fecha_entrada, fecha_salida) FROM stdin;
+\.
+
+
+--
+-- Name: admins_admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.admins_admin_id_seq', 1, true);
+
+
+--
+-- Name: fichajes_fichaje_id_seq; Type: SEQUENCE SET; Schema: public; Owner: usuario
+--
+
+SELECT pg_catalog.setval('public.fichajes_fichaje_id_seq', 1, false);
+
+
+--
 -- Name: admins admins_admin_user_key; Type: CONSTRAINT; Schema: public; Owner: usuario
 --
 

@@ -19,7 +19,7 @@ QWebSocket* Connection::getWebSocket() {
     return m_webSocket;
 }
 
-void Connection::onMessageReceived(const QString &message) { qDebug() << "Recibido: " << message;
+void Connection::onMessageReceived(const QString &message) { //qDebug() << "Recibido: " << message;
     emit textMessageReceived(message);
 }
 
@@ -27,6 +27,6 @@ void Connection::onDisconnect() {
     emit disconnected();
 }
 
-void Connection::sendJson(const QJsonDocument &json) { qDebug() << "Enviado: " << json.toJson();
+void Connection::sendJson(const QJsonDocument &json) { //qDebug() << "Enviado: " << json.toJson();
     m_webSocket->sendTextMessage(QString(json.toJson()));
 }

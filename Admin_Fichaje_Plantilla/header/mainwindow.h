@@ -7,6 +7,8 @@
 #include "datastructs.h"
 #include "serverconnection.h"
 
+class QListWidgetItem;
+
 namespace Ui {
 class MainWindow;
 }
@@ -29,6 +31,7 @@ private:
     void fillEmpleados(QVector<QString> &empleados);
     void updateRegistros();
     void updateEmpleados();
+    void newEmpleado(QPair<QString, QString> empleadoData);
 
 private slots:
     void messageReceived(QString message);
@@ -36,6 +39,7 @@ private slots:
     void on_pushButton_clicked();
     void on_removeEmployee_clicked();
     void on_createEmployee_clicked();
+    void on_employeeList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 };
 
 #endif // MAINWINDOW_H

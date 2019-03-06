@@ -1,6 +1,7 @@
 #include <QDebug>
 
 #include "databaseinterface.h"
+#include "eangenerator.h"
 
 DatabaseInterface *DatabaseInterface::m_instance = NULL;
 
@@ -97,4 +98,33 @@ void DatabaseInterface::getEmpleadosInfo(QVector<QString> &empleados) {
     while (query.next()) {
         empleados.append(query.value("empleado_id").toString());
     }
+}
+
+void DatabaseInterface::deleteEmpleado(QString eanCode) {
+    QSqlQuery query;
+    query.prepare("UPDATE empleados SET empleado_is_active = FALSE WHERE empleado_id = ?");
+    query.bindValue(0, eanCode);
+    query.exec();
+}
+
+QString DatabaseInterface::createEmpleado(QString password) {
+    QSqlQuery query;
+
+    query.prepare("SELECT COUNT(*) FROM empleados");
+    query.exec();
+    query.next();
+    QString productCode = QString::number(query.value(0).toInt()+1);
+
+    QString eanCode = EanGenerator::getEanCode(productCode);
+
+    if (eanCode != "") {
+        query.prepare("INSERT INTO empleados(empleado_id, empleado_password) "
+                      "VALUES(?, ?)");
+        query.bindValue(0, eanCode);
+        query.bindValue(1, password);
+    }
+
+    query.exec();
+
+    return eanCode;
 }

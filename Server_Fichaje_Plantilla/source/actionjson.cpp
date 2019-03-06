@@ -26,6 +26,10 @@ void ActionJson::setActionType() {
             m_actionType = ActionType::ADMIN_CONNECT;
         } else if (actionStr == "EMPLEADOS_INFO") {
             m_actionType = ActionType::EMPLEADOS_INFO;
+        } else if (actionStr == "NEW_EMPLEADO") {
+            m_actionType = ActionType::NEW_EMPLEADO;
+        } else if (actionStr == "DELETE_EMPLEADO") {
+            m_actionType = ActionType::DELETE_EMPLEADO;
         }
     } else {
         m_actionType = ActionType::INVALID;
@@ -60,6 +64,35 @@ void ActionJson::processRequest() {
         } else {
             sendRequestSuccess(false);
         }
+        break;
+
+    case ActionType::NEW_EMPLEADO:
+        if (m_json["data"] != QJsonValue::Undefined) {
+            QString eanCode = DatabaseInterface::getInstance()->createEmpleado(m_json["data"].toString());
+            if (eanCode != "") {
+                QJsonObject newData;
+                newData.insert("action", QJsonValue("NEW_EMPLEADO"));
+                newData.insert("eanCode", QJsonValue(eanCode));
+                newData.insert("password", QJsonValue(m_json["data"].toString()));
+                m_connection->sendJson(QJsonDocument{newData});
+            } else {
+                sendRequestSuccess(false);
+            }
+        } else {
+            sendRequestSuccess(false);
+        }
+        break;
+
+    case ActionType::DELETE_EMPLEADO:
+        if (m_json["data"] != QJsonValue::Undefined) {
+            DatabaseInterface::getInstance()->deleteEmpleado(m_json["data"].toString());
+            QJsonObject update;
+            update.insert("action", QJsonValue("UPDATE"));
+            ConnectionManager::getInstance()->sendMessageToAdmins(QJsonDocument{update});
+        } else {
+            sendRequestSuccess(false);
+        }
+        break;
     }
 }
 

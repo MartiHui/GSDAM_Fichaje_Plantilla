@@ -23,6 +23,8 @@ void ActionJson::setActionType() {
             m_actionType = ActionType::UPDATE;
         } else if (actionStr == "EMPLEADOS_INFO") {
             m_actionType = ActionType::EMPLEADOS_INFO;
+        } else if (actionStr == "NEW_EMPLEADO") {
+            m_actionType = ActionType::NEW_EMPLEADO;
         }
     } else {
         m_actionType = ActionType::INVALID;
@@ -129,4 +131,29 @@ QString ActionJson::askEmpleadosInfo() {
     ask.insert("action", QJsonValue("EMPLEADOS_INFO"));
 
     return QJsonDocument(ask).toJson();
+}
+
+QString ActionJson::newEmpleado(QString password) {
+    QJsonObject ask;
+
+    ask.insert("action", QJsonValue("NEW_EMPLEADO"));
+    ask.insert("data", QJsonValue(password));
+
+    return QJsonDocument(ask).toJson();
+}
+
+QString ActionJson::deleteEmpleado(QString empleadoId) {
+    QJsonObject ask;
+
+    ask.insert("action", QJsonValue("DELETE_EMPLEADO"));
+    ask.insert("data", QJsonValue(empleadoId));
+
+    return QJsonDocument(ask).toJson();
+}
+
+QPair<QString, QString> ActionJson::getNewEmpleadoData() {
+    QPair<QString, QString> data;
+    data.first = m_json.object()["eanCode"].toString();
+    data.second = m_json.object()["password"].toString();
+    return data;
 }
