@@ -75,15 +75,22 @@ bool ActionJson::getRegistrosInfo(QVector<Registro> *registros, QVector<Registro
     return validJson;
 }
 
-bool ActionJson::getEmpleadosInfo(QVector<QString> *empleados) {
+bool ActionJson::getEmpleadosInfo(QVector<QMap<QString, QString> > *empleados) {
     bool validJson{true};
 
     if (m_json.object()["empleados"].isArray()) {
         QJsonArray empleadosArray = m_json.object()["empleados"].toArray();
 
         for (int i = 0; i < empleadosArray.count(); i++) {
-            if (empleadosArray.at(i).type() == QJsonValue::String) {
-                empleados->append(empleadosArray.at(i).toString());
+            if (empleadosArray.at(i).type() == QJsonValue::Object) {
+                QJsonObject empleadoObject = empleadosArray.at(i).toObject();
+
+                QMap<QString, QString> empleado;
+                empleado["id"] = empleadoObject["id"];
+                empleado["nombre"] = empleadoObject["nombre"];
+                empleado["apellido"] = empleadoObject["apellido"];
+
+                empleados->append(empleado);
             } else {
                 validJson = false;
                 break;

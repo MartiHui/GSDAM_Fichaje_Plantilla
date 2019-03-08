@@ -154,15 +154,20 @@ void ActionJson::checkAdminCredentials() {
 }
 
 void ActionJson::sendEmpleadosInfo() {
-    QVector<QString> empleados;
+    QVector<QMap<QString, QString> > empleados;
     DatabaseInterface::getInstance()->getEmpleadosInfo(empleados);
 
     QJsonObject json;
     json.insert("action", QJsonValue("EMPLEADOS_INFO"));
 
     QJsonArray empleadosJson;
-    for (QString empleado : empleados) {
-        empleadosJson.append(QJsonValue(empleado));
+    for (auto empleado : empleados) {
+        QJsonObject empleadoJson;
+        empleadoJson.insert("id", QJsonValue(empleado["id"]));
+        empleadoJson.insert("nombre", QJsonValue(empleado["nombre"]));
+        empleadoJson.insert("apellido", QJsonValue(empleado["apellido"]));
+
+        empleadosJson.append(QJsonValue(empleadoJson));
     }
 
     json.insert("empleados", QJsonValue(empleadosJson));

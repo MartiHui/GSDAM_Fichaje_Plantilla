@@ -46,11 +46,15 @@ void MainWindow::fillHistorial(QVector<Registro> &registros) {
     }
 }
 
-void MainWindow::fillEmpleados(QVector<QString> &empleados) {
-    ui->employeeList->clear();
+void MainWindow::fillEmpleados(QVector<QMap<QString, QString> > &empleados) {
+    ui->employeeList->clearContents();
 
-    for (QString empleado : empleados) {
-        ui->employeeList->addItem(empleado);
+    int size = empleados.count();
+    ui->employeeList->setRowCount(size);
+    for (int i = 0; i < size; i++) {
+        ui->employeeList->setItem(i, 0, new QTableWidgetItem(empleados[i]["id"]));
+        ui->employeeList->setItem(i, 1, new QTableWidgetItem(empleados[i]["nombre"]));
+        ui->employeeList->setItem(i, 2, new QTableWidgetItem(empleados[i]["apellido"]));
     }
 }
 
@@ -96,7 +100,7 @@ void MainWindow::messageReceived(QString message) {
 
     case ActionType::EMPLEADOS_INFO:
     {
-        QVector<QString> empleados;
+        QVector<QMap<QString, QString> > empleados;
 
         if (action.getEmpleadosInfo(&empleados)) {
             fillEmpleados(empleados);

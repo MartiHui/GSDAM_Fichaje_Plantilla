@@ -93,13 +93,19 @@ bool DatabaseInterface::doesAdminExist(QString username, QString password) {
     return query.next();
 }
 
-void DatabaseInterface::getEmpleadosInfo(QVector<QString> &empleados) {
+void DatabaseInterface::getEmpleadosInfo(QVector<QMap<QString, QString> > &empleados) {
     QSqlQuery query;
-    query.prepare("SELECT empleado_id FROM empleados WHERE empleado_is_active IS TRUE");
+    query.prepare("SELECT empleado_id, empleado_nombre, empleado_apellido FROM empleados "
+                  "WHERE empleado_is_active IS TRUE");
     query.exec();
 
     while (query.next()) {
-        empleados.append(query.value("empleado_id").toString());
+        QMap<QString, QString> empleado;
+        empleado["id"] = query.value("empleado_id").toString();
+        empleado["nombre"] = query.value("empleado_nombre").toString();
+        empleado["apellido"] = query.value("empleado_apellido").toString();
+
+        empleados.append(empleado;
     }
 }
 

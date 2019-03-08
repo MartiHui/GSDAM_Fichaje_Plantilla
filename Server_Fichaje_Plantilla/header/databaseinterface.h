@@ -20,7 +20,7 @@ public:
     void punchIoEmployee(QString eanCode);
     void getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros);
     bool doesAdminExist(QString username, QString password);
-    void getEmpleadosInfo(QVector<QString> &empleados);
+    void getEmpleadosInfo(QVector<QMap<QString, QString> > &empleados);
     void deleteEmpleado(QString eanCode);
     QPair<QString, QString> createEmpleado(QString nombre, QString apellido);
 
