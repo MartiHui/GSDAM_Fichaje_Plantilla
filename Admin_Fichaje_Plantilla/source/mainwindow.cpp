@@ -136,9 +136,9 @@ void MainWindow::on_pushButton_clicked() {
 
 void MainWindow::on_removeEmployee_clicked() {
     if (ui->employeeList->currentItem()) {
-        ui->removeEmployee->setText("Dar de baja");
-        m_connection->sendMessage(ActionJson::deleteEmpleado(
-                                      ui->employeeList->currentItem()->text()));
+        QString id = ui->employeeList->item
+                (ui->employeeList->currentItem()->row(), 0)->text();
+        m_connection->sendMessage(ActionJson::deleteEmpleado(id);
     }
 }
 
@@ -152,13 +152,6 @@ void MainWindow::on_createEmployee_clicked() {
     } else {
         QMessageBox msg;
         msg.setText("Introduce nombre y apellido para crear un nuevo usuario");
-    }
-}
-
-void MainWindow::on_employeeList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
-{
-    if (current) {
-        ui->removeEmployee->setText("Dar de bajar " + current->text());
     }
 }
 

@@ -41,7 +41,7 @@ DatabaseInterface::DatabaseInterface() {
 bool DatabaseInterface::doesUserExist(QString eanCode, QString password) {
     QSqlQuery query;
     query.prepare("SELECT empleado_id FROM empleados WHERE empleado_id = ? AND "
-                  "empleado_password = ? AND empleado_is_active IS TRUE");
+                  "empleado_password = ? AND empleado_activo IS TRUE");
     query.bindValue(0, eanCode);
     query.bindValue(1, password);
     query.exec();
@@ -102,7 +102,7 @@ bool DatabaseInterface::doesAdminExist(QString username, QString password) {
 void DatabaseInterface::getEmpleadosInfo(QVector<QMap<QString, QString> > &empleados) {
     QSqlQuery query;
     query.prepare("SELECT empleado_id, empleado_nombre, empleado_apellido FROM empleados "
-                  "WHERE empleado_is_active IS TRUE");
+                  "WHERE empleado_activo IS TRUE");
     query.exec();
 
     while (query.next()) {
@@ -117,7 +117,7 @@ void DatabaseInterface::getEmpleadosInfo(QVector<QMap<QString, QString> > &emple
 
 void DatabaseInterface::deleteEmpleado(QString eanCode) {
     QSqlQuery query;
-    query.prepare("UPDATE empleados SET empleado_is_active = FALSE WHERE empleado_id = ?");
+    query.prepare("UPDATE empleados SET empleado_activo = FALSE WHERE empleado_id = ?");
     query.bindValue(0, eanCode);
     query.exec();
 }

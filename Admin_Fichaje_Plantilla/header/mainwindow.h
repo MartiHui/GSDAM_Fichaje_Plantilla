@@ -39,7 +39,6 @@ private slots:
     void on_pushButton_clicked();
     void on_removeEmployee_clicked();
     void on_createEmployee_clicked();
-    void on_employeeList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 };
 
 #endif // MAINWINDOW_H
