@@ -10,12 +10,10 @@ EmployeeInfo::EmployeeInfo(QString eanCode, QString password) :
 }
 
 bool EmployeeInfo::isValid(QString &reason) {
-    bool valid{true};
-
     // EAN13 debe tener 13 caracteres
     if (m_eanCode.length() != 13) {
         reason = "El código debe tener 13 dígitos";
-        valid = false;
+        return false;
     }
 
     // EAN13 debe ser todo números
@@ -24,17 +22,29 @@ bool EmployeeInfo::isValid(QString &reason) {
     for (int i = 0; i < m_eanCode.length(); i++) {
         if (!m_eanCode.at(i).isDigit()) {
             reason = "El código debe ser un número";
-            valid = false;
+            return false;
         }
     }
 
     // El último dígito del EAN13 es un digito de validacion
     if (m_eanCode.at(m_eanCode.length()-1) != calculateCheckSumDigit()) {
         reason = "El dígito de validación no es correcto";
-        valid = false;
+        return false;
     }
 
-    return valid;
+    if (m_password.length() != 4) {
+        reason = "La contraseña son 4 dígitos.";
+        return false;
+    }
+
+    for (int i = 0; i < m_password.length(); i++) {
+        if (!m_password.at(i).isDigit()) {
+            reason = "La contraseña debe ser un número";
+            return false;
+        }
+    }
+
+    return true;
 }
 
 QString EmployeeInfo::toJson() {

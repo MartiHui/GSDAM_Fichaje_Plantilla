@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QTimer>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -28,33 +29,34 @@ void MainWindow::on_ficharBtn_clicked() {
         msg.exec();
     } else {
         EmployeeInfo info{ui->userIdentification->text(), ui->userPassword->text()};
+        ui->ficharBtn->setEnabled(false);
 
         QString errorMsg;
         if (info.isValid(errorMsg)) {
             ui->userIdentification->clear();
             ui->userPassword->clear();
-            ui->ficharBtn->setEnabled(false);
 
             m_connection->sendMessage(info.toJson());
         } else {
-            QMessageBox msg;
-            msg.setText("El código de identificación no es correcto. " + errorMsg);
-            msg.exec();
+            changeInfoMessage(errorMsg, "red");
         }
     }
 }
 
 void MainWindow::messageReceived(QString message) {
-    ui->ficharBtn->setEnabled(true);
+    QJsonObject answer = QJsonDocument::fromJson(message.toUtf8()).object();
 
-    QJsonValue requestResult = QJsonDocument::fromJson(message.toUtf8()).object()["isRequestSuccesful"];
-    QMessageBox msg;
+    QString msg = answer["message"].toString();
+    QString color = (answer["requestSuccessful"].toBool()) ? "green" : "red";
 
-    if (requestResult == QJsonValue::Undefined || !requestResult.toBool()) {
-        msg.setText("Ha habido problemas con tu solicitud");
-    } else {
-        msg.setText("Solicitud realizada correctamente");
-    }
+    changeInfoMessage(msg, color);
+}
 
-    msg.exec();
+void MainWindow::changeInfoMessage(QString message, QString color) {
+    ui->infoLabel->setText(message);
+    ui->infoLabel->setStyleSheet(QString("QLabel {border: 2px solid %1;}").arg(color));
+    QTimer::singleShot(3000, []() {
+        ui->infoLabel->setText("");
+        ui->ficharBtn->setEnabled(true);
+    });
 }

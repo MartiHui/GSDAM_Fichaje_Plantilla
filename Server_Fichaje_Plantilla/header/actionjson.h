@@ -31,6 +31,7 @@ private:
     void setActionType();
     void processRequest(); // Actua según el ActionType del documento
     void sendRequestSuccess(bool isSuccesful);
+    void sendRequestSuccess(bool isSuccesful, QString msg);
     void punchIoEmployee();
     void sendRegistrosInfo();
     void checkAdminCredentials();

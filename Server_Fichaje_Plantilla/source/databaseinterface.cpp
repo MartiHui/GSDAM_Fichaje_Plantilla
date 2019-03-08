@@ -49,24 +49,30 @@ bool DatabaseInterface::doesUserExist(QString eanCode, QString password) {
     return query.next();
 }
 
-void DatabaseInterface::punchIoEmployee(QString eanCode) {
+void DatabaseInterface::punchIoEmployee(QString eanCode, QString &response) {
     QSqlQuery query;
-    query.prepare("SELECT fichaje_id, fecha_salida FROM fichajes WHERE empleado_id = ? "
-                  "ORDER BY fecha_salida DESC LIMIT 1");
+    query.prepare("SELECT fichaje_es_entrada, empleado_nombre, empleado_apellido FROM fichajes "
+                  "INNER JOIN empleados ON (fichajes.empleado_id = empleados.empleado_id) "
+                  "WHERE fichajes.empleado_id = ? ORDER BY fichaje_fecha DESC LIMIT 1");
     query.bindValue(0, eanCode);
     query.exec();
 
-    if (query.next() && query.value("fecha_salida").toDateTime().toString() == "") {
-        QSqlQuery update;
-        update.prepare("UPDATE fichajes SET fecha_salida = now() WHERE fichaje_id = ?");
-        update.bindValue(0, query.value("fichaje_id").toInt());
-        update.exec();
+    query.prepare("INSERT INTO fichajes(empleado_id, fichaje_es_entrada) "
+                  "VALUES(?, ?)");
+    query.bindValue(0, eanCode);
+    if (query.next() && query.value("fichaje_es_entrada").toBool()) {
+        query.bindValue(1, false);
+        response = QString("Has entrado correctamente. Bienvenido %1 %2")
+                .arg(query.value("empleado_nombre").toString())
+                .arg(query.value("empleado_apellido").toString());
     } else {
-        QSqlQuery insert;
-        insert.prepare("INSERT INTO fichajes(empleado_id, fecha_entrada) VALUES(?, now())");
-        insert.bindValue(0, eanCode);
-        insert.exec();
+        query.bindValue(1, true);
+        response = QString("Has salido correctamente. Hasta luego %1 %2")
+                .arg(query.value("empleado_nombre").toString())
+                .arg(query.value("empleado_apellido").toString());
     }
+
+    query.exec();
 }
 
 void DatabaseInterface::getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros) {

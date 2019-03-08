@@ -20,6 +20,8 @@ private:
     ServerConnection *m_connection;
     Ui::MainWindow *ui;
 
+    void changeInfoMessage(QString message, QString color);
+
 private slots:
     void on_ficharBtn_clicked();
     void messageReceived(QString message);

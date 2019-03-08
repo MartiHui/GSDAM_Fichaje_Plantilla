@@ -17,7 +17,7 @@ public:
     // Comprueba si la combinacion de identificacion y contraseña existen
     // en la base de datos.
     bool doesUserExist(QString eanCode, QString password);
-    void punchIoEmployee(QString eanCode);
+    void punchIoEmployee(QString eanCode, QString &response);
     void getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros);
     bool doesAdminExist(QString username, QString password);
     void getEmpleadosInfo(QVector<QMap<QString, QString> > &empleados);

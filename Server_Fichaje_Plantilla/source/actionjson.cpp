@@ -86,21 +86,36 @@ void ActionJson::processRequest() {
 void ActionJson::sendRequestSuccess(bool isSuccesful) {
     QJsonObject json;
 
-    json.insert("isRequestSuccesful", QJsonValue(isSuccesful));
+    json.insert("requestSuccessful", QJsonValue(isSuccesful));
+
+    m_connection->sendJson(QJsonDocument{json});
+}
+
+void ActionJson::sendRequestSuccess(bool isSuccesful, QString msg) {
+    QJsonObject json;
+
+    json.insert("requestSuccessful", QJsonValue(isSuccesful));
+    json.insert("message", QJsonValue(msg));
 
     m_connection->sendJson(QJsonDocument{json});
 }
 
 void ActionJson::punchIoEmployee() {
     bool requestResult{false};
+    QString msg{""};
+
     QString eanCode = m_json["empleado_id"].toString();
     QString password = m_json["empleado_password"].toString();
 
     if (eanCode != QJsonValue::Undefined && password != QJsonValue::Undefined) {
         if (DatabaseInterface::getInstance()->doesUserExist(eanCode, password)) {
             requestResult = true;
-            DatabaseInterface::getInstance()->punchIoEmployee(eanCode);
+            DatabaseInterface::getInstance()->punchIoEmployee(eanCode, msg);
+        } else {
+            msg = "Usuario o contraseña incorrectas.";
         }
+    } else {
+        msg = "Ha habido algún problema con el servidor.";
     }
 
     if (requestResult) {
@@ -109,7 +124,7 @@ void ActionJson::punchIoEmployee() {
         ConnectionManager::getInstance()->sendMessageToAdmins(QJsonDocument{update});
     }
 
-    sendRequestSuccess(requestResult);
+    sendRequestSuccess(requestResult, msg);
 }
 
 void ActionJson::sendRegistrosInfo() {
