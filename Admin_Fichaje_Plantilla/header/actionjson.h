@@ -36,7 +36,7 @@ public:
     static QString askRegistrosInfo();
     static QString connectAdmin(QString name, QString password);
     static QString askEmpleadosInfo();
-    static QString newEmpleado(QString password);
+    static QString newEmpleado(QString nombre, QString apellido);
     static QString deleteEmpleado(QString empleadoId);
 
 private:

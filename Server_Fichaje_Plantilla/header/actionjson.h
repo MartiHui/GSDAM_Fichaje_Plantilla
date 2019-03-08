@@ -35,6 +35,7 @@ private:
     void sendRegistrosInfo();
     void checkAdminCredentials();
     void sendEmpleadosInfo();
+    void createNewEmpleado();
 };
 
 #endif // ACTIONJSON_H

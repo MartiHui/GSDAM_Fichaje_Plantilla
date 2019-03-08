@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QTime>
 
 #include "databaseinterface.h"
 #include "eangenerator.h"
@@ -33,6 +34,8 @@ DatabaseInterface::DatabaseInterface() {
     } else {
         qDebug() << "Conectado a la base de datos.";
     }
+
+    qsrand(static_cast<uint>(QTime::currentTime()));
 }
 
 bool DatabaseInterface::doesUserExist(QString eanCode, QString password) {
@@ -107,7 +110,7 @@ void DatabaseInterface::deleteEmpleado(QString eanCode) {
     query.exec();
 }
 
-QString DatabaseInterface::createEmpleado(QString password) {
+QPair<QString, QString> createEmpleado(QString nombre, QString apellido) {
     QSqlQuery query;
 
     query.prepare("SELECT COUNT(*) FROM empleados");
@@ -116,15 +119,18 @@ QString DatabaseInterface::createEmpleado(QString password) {
     QString productCode = QString::number(query.value(0).toInt()+1);
 
     QString eanCode = EanGenerator::getEanCode(productCode);
+    QString password = QString::number(qrand() % 9999);
 
     if (eanCode != "") {
-        query.prepare("INSERT INTO empleados(empleado_id, empleado_password) "
-                      "VALUES(?, ?)");
+        query.prepare("INSERT INTO empleados(empleado_id, empleado_password, "
+                      "empleado_nombre, empleado_apellido) VALUES(?, ?, ?, ?)");
         query.bindValue(0, eanCode);
         query.bindValue(1, password);
+        query.bindValue(2, nombre);
+        query.bindValue(3, apellido);
+
+        query.exec();
     }
 
-    query.exec();
-
-    return eanCode;
+    return QPair{eanCode, password};
 }

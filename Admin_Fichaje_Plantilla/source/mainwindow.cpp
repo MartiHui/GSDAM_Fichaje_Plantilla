@@ -139,13 +139,15 @@ void MainWindow::on_removeEmployee_clicked() {
 }
 
 void MainWindow::on_createEmployee_clicked() {
-    if (ui->newPassword->text() != "") {
-        m_connection->sendMessage(ActionJson::newEmpleado(ui->newPassword->text()));
-        ui->newPassword->setText("");
+    if (ui->empleadoNombre->text() != "" && ui->empleadoApellido->text() != "") {
+        m_connection->sendMessage(ActionJson::newEmpleado(ui->empleadoNombre->text(),
+                                                          ui->empleadoApellido->text()));
+        ui->empleadoNombre->setText("");
+        ui->empleadoApellido->setText("");
+        ui->createEmployee->setEnabled(false);
     } else {
         QMessageBox msg;
-        msg.setText("No puede tener contraseña vacía.");
-        msg.exec();
+        msg.setText("Introduce nombre y apellido para crear un nuevo usuario");
     }
 }
 
@@ -157,6 +159,7 @@ void MainWindow::on_employeeList_currentItemChanged(QListWidgetItem *current, QL
 }
 
 void MainWindow::newEmpleado(QPair<QString, QString> empleadoData) {
+    ui->createEmployee->setEnabled(true);
     QMessageBox msg;
     msg.setText("Nuevo empleado.\nID: " + empleadoData.first +
                 "\nContraseña: " + empleadoData.second);

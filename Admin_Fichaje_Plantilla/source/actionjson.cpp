@@ -133,11 +133,12 @@ QString ActionJson::askEmpleadosInfo() {
     return QJsonDocument(ask).toJson();
 }
 
-QString ActionJson::newEmpleado(QString password) {
+QString ActionJson::newEmpleado(QString nombre, QString apellido) {
     QJsonObject ask;
 
     ask.insert("action", QJsonValue("NEW_EMPLEADO"));
-    ask.insert("data", QJsonValue(password));
+    ask.insert("nombre", QJsonValue(nombre));
+    ask.insert("apellido", QJsonValue(apellido));
 
     return QJsonDocument(ask).toJson();
 }

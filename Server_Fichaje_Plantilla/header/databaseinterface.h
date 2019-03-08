@@ -22,7 +22,7 @@ public:
     bool doesAdminExist(QString username, QString password);
     void getEmpleadosInfo(QVector<QString> &empleados);
     void deleteEmpleado(QString eanCode);
-    QString createEmpleado(QString password);
+    QPair<QString, QString> createEmpleado(QString nombre, QString apellido);
 
 private:
     explicit DatabaseInterface();

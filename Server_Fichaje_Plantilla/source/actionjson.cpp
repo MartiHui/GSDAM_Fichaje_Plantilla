@@ -67,20 +67,7 @@ void ActionJson::processRequest() {
         break;
 
     case ActionType::NEW_EMPLEADO:
-        if (m_json["data"] != QJsonValue::Undefined) {
-            QString eanCode = DatabaseInterface::getInstance()->createEmpleado(m_json["data"].toString());
-            if (eanCode != "") {
-                QJsonObject newData;
-                newData.insert("action", QJsonValue("NEW_EMPLEADO"));
-                newData.insert("eanCode", QJsonValue(eanCode));
-                newData.insert("password", QJsonValue(m_json["data"].toString()));
-                m_connection->sendJson(QJsonDocument{newData});
-            } else {
-                sendRequestSuccess(false);
-            }
-        } else {
-            sendRequestSuccess(false);
-        }
+        createNewEmpleado();
         break;
 
     case ActionType::DELETE_EMPLEADO:
@@ -181,4 +168,26 @@ void ActionJson::sendEmpleadosInfo() {
     json.insert("empleados", QJsonValue(empleadosJson));
 
     m_connection->sendJson(QJsonDocument{json});
+}
+
+void ActionJson::createNewEmpleado() {
+    if (m_json["nombre"] != QJsonValue::Undefined &&
+            m_json["apellido"] != QJsonValue::Undefined) {
+        QPair<QString, QString> credenciales = DatabaseInterface::getInstance()->
+                createEmpleado(m_json["nombre"].toString(), m_json["apellido"].toString());
+
+        if (credenciales.first != "") {
+            QJsonObject answer;
+
+            answer.insert("action", QJsonValue("NEW_EMPLEADO"));
+            answer.insert("eanCode", QJsonValue(credenciales.first));
+            answer.insert("password", QJsonValue(credenciales.second));
+
+            m_connection->sendJson(QJsonDocument{answer});
+        } else {
+            sendRequestSuccess(false);
+        }
+    } else {
+        sendRequestSuccess(false);
+    }
 }
