@@ -4,9 +4,11 @@
 #include <QString>
 
 struct Registro {
-    QString id;
-    QString fecha_entrada;
-    QString fecha_salida;
+    int empleadoId;
+    QString empleadoNombre;
+    QString empleadoApellido;
+    bool esEntrada;
+    QString fecha;
 };
 
 #endif // DATASTRUCTS_H

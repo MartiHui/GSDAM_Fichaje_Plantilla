@@ -23,6 +23,43 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::fillRegistros(QVector<Registro> &registros) {
+    QMap<int, QString> registrosAbiertos;
+    QMap<int, QString> nombres;
+
+    QString logListTemplate = "%1 - %2 ha %3";
+    QString logListAction;
+    for (Registro registro : registros) {
+        if (registro.esEntrada) {
+            logListAction = "entrado";
+            registrosAbiertos.insert(registro.empleadoId, registro.fecha);
+
+            if (!nombres.contains(registro.empleadoId)) {
+                nombres.insert(registro.empleadoId,
+                               registro.empleadoNombre + " " + registro.empleadoApellido);
+            }
+        } else {
+            ui->historialView->insertRow(0);
+            ui->historialView->setItem(0, 0, new QTableWidgetItem(nombres.value(registro.empleadoId)));
+            ui->historialView->setItem(0, 1, new QTableWidgetItem(registrosAbiertos.value(registro.empleadoId)));
+            ui->historialView->setItem(0, 2, new QTableWidgetItem(registro.fecha));
+
+            registrosAbiertos.remove(registro.empleadoId);
+            logListAction = "salido";
+        }
+
+        ui->logList->insertItem(0, QString(logListTemplate).arg(registro.fecha)
+                                .arg(registro.empleadoNombre + " " + registro.empleadoApellido)
+                                .arg(logListAction));
+    }
+
+    for (int registro : registrosAbiertos.keys()) {
+        ui->registrosView->insertRow(0);
+        ui->registrosView->setItem(0, 0, new QTableWidgetItem(nombres.value(registro)));
+        ui->registrosView->setItem(0, 1, new QTableWidgetItem(registrosAbiertos.value(registro)));
+    }
+}
+
 void MainWindow::fillRegistro(QVector<Registro> &registros) {
     ui->registrosView->clearContents();
     int size = registros.count();
@@ -53,8 +90,7 @@ void MainWindow::fillEmpleados(QVector<QMap<QString, QString> > &empleados) {
     ui->employeeList->setRowCount(size);
     for (int i = 0; i < size; i++) {
         ui->employeeList->setItem(i, 0, new QTableWidgetItem(empleados[i]["id"]));
-        ui->employeeList->setItem(i, 1, new QTableWidgetItem(empleados[i]["nombre"]));
-        ui->employeeList->setItem(i, 2, new QTableWidgetItem(empleados[i]["apellido"]));
+        ui->employeeList->setItem(i, 1, new QTableWidgetItem(empleados[i]["nombre"] + " " + empleados[i]["apellido"]));
     }
 }
 
@@ -82,12 +118,10 @@ void MainWindow::messageReceived(QString message) {
 
     case ActionType::REGISTROS_INFO:
     {
-        QVector<Registro> registrosAbiertos;
-        QVector<Registro> registroHistorial;
+        QVector<Registro> registros;
 
-        if (action.getRegistrosInfo(&registrosAbiertos, &registroHistorial)) {
-            fillRegistro(registrosAbiertos);
-            fillHistorial(registroHistorial);
+        if (action.getRegistrosInfo(&registros)) {
+            fillRegistros(registros);
         }
 
         break;

@@ -83,12 +83,22 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="logTab">
      <attribute name="title">
       <string>Log</string>
      </attribute>
+     <widget class="QListWidget" name="logList">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>771</width>
+        <height>371</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="registrosTab">
      <attribute name="title">
@@ -111,7 +121,7 @@
       </attribute>
       <column>
        <property name="text">
-        <string>ID</string>
+        <string>Nombre</string>
        </property>
       </column>
       <column>
@@ -139,7 +149,7 @@
       </attribute>
       <column>
        <property name="text">
-        <string>ID</string>
+        <string>Nombre</string>
        </property>
       </column>
       <column>
@@ -282,7 +292,7 @@
        </rect>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>160</number>
+       <number>240</number>
       </attribute>
       <column>
        <property name="text">
@@ -292,11 +302,6 @@
       <column>
        <property name="text">
         <string>Nombre</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Apellido</string>
        </property>
       </column>
      </widget>

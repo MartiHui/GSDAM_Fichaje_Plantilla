@@ -22,11 +22,13 @@ class ActionJson : public QObject {
 
 public:
     explicit ActionJson(QString json, Connection *connection);
+    struct Registro;
 
 private:
     QJsonObject m_json;
     Connection *m_connection;
     ActionType m_actionType;
+
 
     void setActionType();
     void processRequest(); // Actua según el ActionType del documento

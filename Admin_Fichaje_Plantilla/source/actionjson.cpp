@@ -35,7 +35,7 @@ ActionType ActionJson::getActionType() {
     return m_actionType;
 }
 
-bool ActionJson::getRegistrosInfo(QVector<Registro> *registros, QVector<Registro> *historial) {
+bool ActionJson::getRegistrosInfo(QVector<Registro> *registros) {
     bool validJson{true};
 
     if (m_json.object()["registros"].isArray()) {
@@ -48,17 +48,15 @@ bool ActionJson::getRegistrosInfo(QVector<Registro> *registros, QVector<Registro
 
                 // Si tiene todos los campos que esperamos
                 if (registro["empleado_id"] != QJsonValue::Undefined &&
-                        registro["fecha_entrada"] != QJsonValue::Undefined &&
-                        registro["fecha_salida"] != QJsonValue::Undefined) {
-                    Registro r{registro["empleado_id"].toString(),
-                              registro["fecha_entrada"].toString(),
-                              registro["fecha_salida"].toString()};
-
-                    if (r.fecha_salida == "") {
-                        registros->push_back(r);
-                    } else {
-                        historial->push_back(r);
-                    }
+                        registro["empleado_nombre"] != QJsonValue::Undefined &&
+                        registro["empleado_apellido"] != QJsonValue::Undefined &&
+                        registro["es_entrada"] != QJsonValue::Undefined &&
+                        registro["fecha"] != QJsonValue::Undefined) {
+                    registros->push_back(Registro{registro["empleado_id"].toInt(),
+                                                  registro["empleado_nombre"].toString(),
+                                                  registro["empleado_apellido"].toString(),
+                                                  registro["es_entrada"].toBool(),
+                                                  registro["fecha"].toString()});
                 } else {
                     validJson = false;
                     break;

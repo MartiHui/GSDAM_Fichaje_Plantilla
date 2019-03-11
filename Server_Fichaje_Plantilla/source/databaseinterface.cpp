@@ -75,16 +75,19 @@ void DatabaseInterface::punchIoEmployee(QString eanCode, QString &response) {
     query.exec();
 }
 
-void DatabaseInterface::getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros) {
+void DatabaseInterface::getRegistrosInfo(QVector<ActionJson::Registro> &registros) {
     QSqlQuery query;
-    query.prepare("SELECT empleado_id, fecha_entrada, fecha_salida FROM fichajes "
-                  "ORDER BY fecha_salida DESC");
+    query.prepare("SELECT empleado_id, empleado_nombre, empleado_apellido, fichaje_es_entrada, fichaje_fecha "
+                  "FROM fichajes INNER JOIN empleados ON (fichajes.empleado_id = empleados.empleado_id) "
+                  "ORDER BY fichaje_fecha DESC");
     query.exec();
 
     while (query.next()) {
-        registros.append(qMakePair(query.value("empleado_id").toString(),
-                                    qMakePair(query.value("fecha_entrada").toDateTime().toString(),
-                                              query.value("fecha_salida").toDateTime().toString())));
+        registros.push_back(ActionJson::Registro{query.value("empleado_id").toString(),
+                            query.value("empleado_nombre").toString(),
+                            query.value("empleado_apellido").toString(),
+                            query.value("fichaje_es_entrada").toBool(),
+                            query.value("fichaje_fecha").toDateTime().toString()});
     }
 }
 

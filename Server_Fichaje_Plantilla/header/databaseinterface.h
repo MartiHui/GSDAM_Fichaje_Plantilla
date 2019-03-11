@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QtSql>
 
+#include "actionjson.h"
+
 // La clase DatabaseInterface sirve para conectarse a la base de datos y realizar
 // todas las consultas necesarias
 class DatabaseInterface : public QObject {
@@ -18,7 +20,7 @@ public:
     // en la base de datos.
     bool doesUserExist(QString eanCode, QString password);
     void punchIoEmployee(QString eanCode, QString &response);
-    void getRegistrosInfo(QVector<QPair<QString, QPair<QString, QString> > > &registros);
+    void getRegistrosInfo(QVector<ActionJson::Registro> &registros);
     bool doesAdminExist(QString username, QString password);
     void getEmpleadosInfo(QVector<QMap<QString, QString> > &empleados);
     void deleteEmpleado(QString eanCode);

@@ -6,6 +6,14 @@
 #include "databaseinterface.h"
 #include "connectionmanager.h"
 
+struct ActionJson::Registro {
+    QString empleadoId;
+    QString empleadoNombre;
+    QString empleadoApellido;
+    bool esEntrada;
+    QString fecha;
+};
+
 ActionJson::ActionJson(QString json, Connection *connection) :
         m_connection{connection} {
     m_json = QJsonDocument::fromJson(json.toUtf8()).object();
@@ -128,19 +136,21 @@ void ActionJson::punchIoEmployee() {
 }
 
 void ActionJson::sendRegistrosInfo() {
-    QVector<QPair<QString, QPair<QString, QString> > > registros;
+    QVector<Registro> registros;
     DatabaseInterface::getInstance()->getRegistrosInfo(registros);
 
     QJsonObject json;
     json.insert("action", QJsonValue("REGISTROS_INFO"));
 
     QJsonArray registrosJson;
-    for (auto registro : registros) {
+    for (Registro registro : registros) {
         QJsonObject object;
 
-        object.insert("empleado_id", QJsonValue(registro.first));
-        object.insert("fecha_entrada", QJsonValue(registro.second.first));
-        object.insert("fecha_salida", QJsonValue(registro.second.second));
+        object.insert("empleado_id", QJsonValue(registro.empleadoId));
+        object.insert("empleado_nombre", QJsonValue(registro.empleadoNombre));
+        object.insert("empleado_apellido", QJsonValue(registro.empleadoApellido));
+        object.insert("es_entrada", QJsonValue(registro.esEntrada));
+        object.insert("fecha", QJsonValue(registro.fecha));
 
         registrosJson.append(object);
     }

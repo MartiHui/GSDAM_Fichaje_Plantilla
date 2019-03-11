@@ -27,7 +27,7 @@ public:
     // Obtiene todos los objetos de tipo Registro del JSON y los introduce en el
     // vector registros si no tienen fecha de salida, de lo contrario, en el vector
     // historial. La función devuelve true si el JSON es válido
-    bool getRegistrosInfo(QVector<Registro> *registros, QVector<Registro> *historial);
+    bool getRegistrosInfo(QVector<Registro> *registros);
     bool getEmpleadosInfo(QVector<QString> *empleados);
     bool connectAdminSuccessful();
     ActionType getActionType();

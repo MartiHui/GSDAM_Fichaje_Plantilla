@@ -26,8 +26,7 @@ private:
     Ui::MainWindow *ui;
 
     void setTablesHeader();
-    void fillRegistro(QVector<Registro> &registros);
-    void fillHistorial(QVector<Registro> &registros);
+    void fillRegistros(QVector<Registro> &registros);
     void fillEmpleados(QVector<QString> &empleados);
     void updateRegistros();
     void updateEmpleados();
