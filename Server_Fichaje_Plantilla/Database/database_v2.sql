@@ -15,6 +15,20 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -122,33 +136,11 @@ CREATE TABLE public.fichajes (
     fichaje_id integer NOT NULL,
     empleado_id character varying NOT NULL,
     fichaje_es_entrada boolean NOT NULL,
-    fichaje_fecha integer NOT NULL
+    fichaje_fecha timestamp with time zone DEFAULT now()
 );
 
 
 ALTER TABLE public.fichajes OWNER TO usuario;
-
---
--- Name: fichajes_fichaje_fecha_seq; Type: SEQUENCE; Schema: public; Owner: usuario
---
-
-CREATE SEQUENCE public.fichajes_fichaje_fecha_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.fichajes_fichaje_fecha_seq OWNER TO usuario;
-
---
--- Name: fichajes_fichaje_fecha_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: usuario
---
-
-ALTER SEQUENCE public.fichajes_fichaje_fecha_seq OWNED BY public.fichajes.fichaje_fecha;
-
 
 --
 -- Name: fichajes_fichaje_id_seq; Type: SEQUENCE; Schema: public; Owner: usuario
@@ -184,13 +176,6 @@ ALTER TABLE ONLY public.admins ALTER COLUMN admin_id SET DEFAULT nextval('public
 --
 
 ALTER TABLE ONLY public.fichajes ALTER COLUMN fichaje_id SET DEFAULT nextval('public.fichajes_fichaje_id_seq'::regclass);
-
-
---
--- Name: fichajes fichaje_fecha; Type: DEFAULT; Schema: public; Owner: usuario
---
-
-ALTER TABLE ONLY public.fichajes ALTER COLUMN fichaje_fecha SET DEFAULT nextval('public.fichajes_fichaje_fecha_seq'::regclass);
 
 
 --
