@@ -35,7 +35,7 @@ DatabaseInterface::DatabaseInterface() {
         qDebug() << "Conectado a la base de datos.";
     }
 
-    qsrand(static_cast<uint>(QTime::currentTime()));
+    qsrand(static_cast<uint>(QTime::currentTime().msecsSinceStartOfDay()));
 }
 
 bool DatabaseInterface::doesUserExist(QString eanCode, QString password) {
@@ -114,7 +114,7 @@ void DatabaseInterface::getEmpleadosInfo(QVector<QMap<QString, QString> > &emple
         empleado["nombre"] = query.value("empleado_nombre").toString();
         empleado["apellido"] = query.value("empleado_apellido").toString();
 
-        empleados.append(empleado;
+        empleados.append(empleado);
     }
 }
 
@@ -147,5 +147,5 @@ QPair<QString, QString> createEmpleado(QString nombre, QString apellido) {
         query.exec();
     }
 
-    return QPair{eanCode, password};
+    return qMakePair(eanCode, password);
 }

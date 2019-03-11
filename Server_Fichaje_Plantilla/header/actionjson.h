@@ -22,7 +22,13 @@ class ActionJson : public QObject {
 
 public:
     explicit ActionJson(QString json, Connection *connection);
-    struct Registro;
+    struct Registro {
+        QString empleadoId;
+        QString empleadoNombre;
+        QString empleadoApellido;
+        bool esEntrada;
+        QString fecha;
+    };
 
 private:
     QJsonObject m_json;

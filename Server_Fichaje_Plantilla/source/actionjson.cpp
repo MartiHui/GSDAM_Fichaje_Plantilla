@@ -6,14 +6,6 @@
 #include "databaseinterface.h"
 #include "connectionmanager.h"
 
-struct ActionJson::Registro {
-    QString empleadoId;
-    QString empleadoNombre;
-    QString empleadoApellido;
-    bool esEntrada;
-    QString fecha;
-};
-
 ActionJson::ActionJson(QString json, Connection *connection) :
         m_connection{connection} {
     m_json = QJsonDocument::fromJson(json.toUtf8()).object();
