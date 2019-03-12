@@ -84,9 +84,9 @@ bool ActionJson::getEmpleadosInfo(QVector<QMap<QString, QString> > *empleados) {
                 QJsonObject empleadoObject = empleadosArray.at(i).toObject();
 
                 QMap<QString, QString> empleado;
-                empleado["id"] = empleadoObject["id"];
-                empleado["nombre"] = empleadoObject["nombre"];
-                empleado["apellido"] = empleadoObject["apellido"];
+                empleado["id"] = empleadoObject["id"].toString();
+                empleado["nombre"] = empleadoObject["nombre"].toString();
+                empleado["apellido"] = empleadoObject["apellido"].toString();
 
                 empleados->append(empleado);
             } else {

@@ -24,6 +24,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::fillRegistros(QVector<Registro> &registros) {
+    ui->logList->clear();
+    ui->historialView->clearContents();
+    ui->registrosView->clearContents();
+
     QMap<int, QString> registrosAbiertos;
     QMap<int, QString> nombres;
 
@@ -60,29 +64,6 @@ void MainWindow::fillRegistros(QVector<Registro> &registros) {
     }
 }
 
-void MainWindow::fillRegistro(QVector<Registro> &registros) {
-    ui->registrosView->clearContents();
-    int size = registros.count();
-
-    ui->registrosView->setRowCount(size);
-    for (int row = 0; row < size; row++) {
-        ui->registrosView->setItem(row, 0, new QTableWidgetItem(registros[row].id));
-        ui->registrosView->setItem(row, 1, new QTableWidgetItem(registros[row].fecha_entrada));
-    }
-}
-
-void MainWindow::fillHistorial(QVector<Registro> &registros) {
-    ui->historialView->clearContents();
-    int size = registros.count();
-
-    ui->historialView->setRowCount(size);
-    for (int row = 0; row < size; row++) {
-        ui->historialView->setItem(row, 0, new QTableWidgetItem(registros[row].id));
-        ui->historialView->setItem(row, 1, new QTableWidgetItem(registros[row].fecha_entrada));
-        ui->historialView->setItem(row, 2, new QTableWidgetItem(registros[row].fecha_salida));
-    }
-}
-
 void MainWindow::fillEmpleados(QVector<QMap<QString, QString> > &empleados) {
     ui->employeeList->clearContents();
 
@@ -105,9 +86,9 @@ void MainWindow::messageReceived(QString message) {
         break;
 
     case ActionType::CONNECTION:
+        ui->pushButton->setEnabled(true);
         if (action.connectAdminSuccessful()) {
             ui->tabWidget->setEnabled(true);
-            ui->pushButton->setEnabled(true);
             updateRegistros();
             updateEmpleados();
         } else {
@@ -172,7 +153,7 @@ void MainWindow::on_removeEmployee_clicked() {
     if (ui->employeeList->currentItem()) {
         QString id = ui->employeeList->item
                 (ui->employeeList->currentItem()->row(), 0)->text();
-        m_connection->sendMessage(ActionJson::deleteEmpleado(id);
+        m_connection->sendMessage(ActionJson::deleteEmpleado(id));
     }
 }
 
@@ -186,6 +167,7 @@ void MainWindow::on_createEmployee_clicked() {
     } else {
         QMessageBox msg;
         msg.setText("Introduce nombre y apellido para crear un nuevo usuario");
+        msg.exec();
     }
 }
 

@@ -55,8 +55,9 @@ void MainWindow::messageReceived(QString message) {
 void MainWindow::changeInfoMessage(QString message, QString color) {
     ui->infoLabel->setText(message);
     ui->infoLabel->setStyleSheet(QString("QLabel {border: 2px solid %1;}").arg(color));
-    QTimer::singleShot(3000, []() {
+    QTimer::singleShot(3000, [=]() {
         ui->infoLabel->setText("");
         ui->ficharBtn->setEnabled(true);
+        ui->infoLabel->setStyleSheet("QLabel {border: 2px solid black;}");
     });
 }

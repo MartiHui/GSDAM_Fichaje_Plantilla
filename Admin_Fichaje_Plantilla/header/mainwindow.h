@@ -27,7 +27,7 @@ private:
 
     void setTablesHeader();
     void fillRegistros(QVector<Registro> &registros);
-    void fillEmpleados(QVector<QString> &empleados);
+    void fillEmpleados(QVector<QMap<QString, QString> > &empleados);
     void updateRegistros();
     void updateEmpleados();
     void newEmpleado(QPair<QString, QString> empleadoData);

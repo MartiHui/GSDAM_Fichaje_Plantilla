@@ -195,8 +195,7 @@ void ActionJson::sendEmpleadosInfo() {
 void ActionJson::createNewEmpleado() {
     if (m_json["nombre"] != QJsonValue::Undefined &&
             m_json["apellido"] != QJsonValue::Undefined) {
-        QPair<QString, QString> credenciales = DatabaseInterface::getInstance()->
-                createEmpleado(m_json["nombre"].toString(), m_json["apellido"].toString());
+        QPair<QString, QString> credenciales = DatabaseInterface::getInstance()->createEmpleado(m_json["nombre"].toString(), m_json["apellido"].toString());
 
         if (credenciales.first != "") {
             QJsonObject answer;

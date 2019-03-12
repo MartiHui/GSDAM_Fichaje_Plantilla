@@ -28,7 +28,7 @@ public:
     // vector registros si no tienen fecha de salida, de lo contrario, en el vector
     // historial. La función devuelve true si el JSON es válido
     bool getRegistrosInfo(QVector<Registro> *registros);
-    bool getEmpleadosInfo(QVector<QString> *empleados);
+    bool getEmpleadosInfo(QVector<QMap<QString, QString> > *empleados);
     bool connectAdminSuccessful();
     ActionType getActionType();
     QPair<QString, QString> getNewEmpleadoData();

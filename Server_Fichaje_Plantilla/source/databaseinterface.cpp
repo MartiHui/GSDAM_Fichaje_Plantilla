@@ -57,29 +57,30 @@ void DatabaseInterface::punchIoEmployee(QString eanCode, QString &response) {
     query.bindValue(0, eanCode);
     query.exec();
 
-    query.prepare("INSERT INTO fichajes(empleado_id, fichaje_es_entrada) "
+    QSqlQuery insert;
+    insert.prepare("INSERT INTO fichajes(empleado_id, fichaje_es_entrada) "
                   "VALUES(?, ?)");
-    query.bindValue(0, eanCode);
+    insert.bindValue(0, eanCode);
     if (query.next() && query.value("fichaje_es_entrada").toBool()) {
-        query.bindValue(1, false);
-        response = QString("Has entrado correctamente. Bienvenido %1 %2")
+        insert.bindValue(1, false);
+        response = QString("Has salido correctamente. Hasta luego %1 %2")
                 .arg(query.value("empleado_nombre").toString())
                 .arg(query.value("empleado_apellido").toString());
     } else {
-        query.bindValue(1, true);
-        response = QString("Has salido correctamente. Hasta luego %1 %2")
+        insert.bindValue(1, true);
+        response = QString("Has entrado correctamente. Bienvenido %1 %2")
                 .arg(query.value("empleado_nombre").toString())
                 .arg(query.value("empleado_apellido").toString());
     }
 
-    query.exec();
+    insert.exec();
 }
 
 void DatabaseInterface::getRegistrosInfo(QVector<ActionJson::Registro> &registros) {
     QSqlQuery query;
-    query.prepare("SELECT empleado_id, empleado_nombre, empleado_apellido, fichaje_es_entrada, fichaje_fecha "
+    query.prepare("SELECT empleados.empleado_id, empleado_nombre, empleado_apellido, fichaje_es_entrada, fichaje_fecha "
                   "FROM fichajes INNER JOIN empleados ON (fichajes.empleado_id = empleados.empleado_id) "
-                  "ORDER BY fichaje_fecha DESC");
+                  "ORDER BY fichaje_fecha ASC");
     query.exec();
 
     while (query.next()) {
@@ -125,7 +126,7 @@ void DatabaseInterface::deleteEmpleado(QString eanCode) {
     query.exec();
 }
 
-QPair<QString, QString> createEmpleado(QString nombre, QString apellido) {
+QPair<QString, QString> DatabaseInterface::createEmpleado(QString nombre, QString apellido) {
     QSqlQuery query;
 
     query.prepare("SELECT COUNT(*) FROM empleados");
